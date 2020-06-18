@@ -1,0 +1,69 @@
+﻿@model IEnumerable<DisasterRecovery.Models.TimeCard>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalHours)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SiteLocation.LocationName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubContractor.SubContractorName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalHours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SiteLocation.LocationName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdTimeCard }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdTimeCard }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdTimeCard })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<DisasterRecovery.Models.SubContractor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SubContractorName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContractorAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubContractorStatus)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubContractorName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContractorAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubContractorStatus)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdSubContractor }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdSubContractor }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdSubContractor })
+        </td>
+    </tr>
+}
+
+</table>

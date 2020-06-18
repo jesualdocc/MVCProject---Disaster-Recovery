@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DisasterRecovery.Models.JobList>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.JobName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JobDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxHour)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LaborStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubContractor.SubContractorName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaxHour)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LaborStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdJobList }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdJobList }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdJobList })
+        </td>
+    </tr>
+}
+
+</table>

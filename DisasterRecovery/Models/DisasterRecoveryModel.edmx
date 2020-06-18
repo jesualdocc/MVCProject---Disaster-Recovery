@@ -1,0 +1,541 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DisasterRecoveryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="JobList">
+          <Key>
+            <PropertyRef Name="IdJobList" />
+          </Key>
+          <Property Name="IdJobList" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSubContractor" Type="int" Nullable="false" />
+          <Property Name="JobName" Type="varchar" MaxLength="100" />
+          <Property Name="JobDescription" Type="varchar" MaxLength="100" />
+          <Property Name="Rate" Type="decimal" Precision="2" Scale="0" />
+          <Property Name="MaxHour" Type="int" />
+          <Property Name="LaborStatus" Type="int" />
+        </EntityType>
+        <EntityType Name="SiteLocations">
+          <Key>
+            <PropertyRef Name="SiteID" />
+          </Key>
+          <Property Name="SiteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationName" Type="varchar" MaxLength="100" />
+          <Property Name="SiteCode" Type="varchar" MaxLength="20" />
+          <Property Name="ZipCode" Type="int" />
+        </EntityType>
+        <EntityType Name="SubContractor">
+          <Key>
+            <PropertyRef Name="IdSubContractor" />
+          </Key>
+          <Property Name="IdSubContractor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubContractorName" Type="varchar" MaxLength="50" />
+          <Property Name="ContractorAddress" Type="varchar" MaxLength="200" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="Phone" Type="varchar" MaxLength="100" />
+          <Property Name="SubContractorStatus" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TimeCard">
+          <Key>
+            <PropertyRef Name="IdTimeCard" />
+          </Key>
+          <Property Name="IdTimeCard" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteID" Type="int" Nullable="false" />
+          <Property Name="IdSubContractor" Type="int" Nullable="false" />
+          <Property Name="TotalHours" Type="int" />
+          <Property Name="TotalAmount" Type="decimal" Precision="2" Scale="0" />
+          <Property Name="TimeStatus" Type="char" MaxLength="1" />
+          <Property Name="RegDate" Type="datetime" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeCardDetails">
+          <Key>
+            <PropertyRef Name="IdTimeCard" />
+            <PropertyRef Name="IdJobList" />
+          </Key>
+          <Property Name="IdTimeCard" Type="int" Nullable="false" />
+          <Property Name="IdJobList" Type="int" Nullable="false" />
+          <Property Name="Hours" Type="int" />
+          <Property Name="Amount" Type="decimal" Precision="2" Scale="0" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="FirstName" Type="varchar" MaxLength="70" />
+          <Property Name="LastName" Type="varchar" MaxLength="70" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="UserPassWord" Type="varchar" MaxLength="100" />
+          <Property Name="UserStatus" Type="char" MaxLength="1" />
+          <Property Name="IsAdm" Type="int" />
+          <Property Name="IdSubContractor" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_JobList_SubContractor">
+          <End Role="SubContractor" Type="Self.SubContractor" Multiplicity="1" />
+          <End Role="JobList" Type="Self.JobList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubContractor">
+              <PropertyRef Name="IdSubContractor" />
+            </Principal>
+            <Dependent Role="JobList">
+              <PropertyRef Name="IdSubContractor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeCard_SiteLocations">
+          <End Role="SiteLocations" Type="Self.SiteLocations" Multiplicity="1" />
+          <End Role="TimeCard" Type="Self.TimeCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SiteLocations">
+              <PropertyRef Name="SiteID" />
+            </Principal>
+            <Dependent Role="TimeCard">
+              <PropertyRef Name="SiteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeCard_SubContractor">
+          <End Role="SubContractor" Type="Self.SubContractor" Multiplicity="1" />
+          <End Role="TimeCard" Type="Self.TimeCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubContractor">
+              <PropertyRef Name="IdSubContractor" />
+            </Principal>
+            <Dependent Role="TimeCard">
+              <PropertyRef Name="IdSubContractor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeCard_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="TimeCard" Type="Self.TimeCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="TimeCard">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimecardDetails_JobList">
+          <End Role="JobList" Type="Self.JobList" Multiplicity="1" />
+          <End Role="TimeCardDetails" Type="Self.TimeCardDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobList">
+              <PropertyRef Name="IdJobList" />
+            </Principal>
+            <Dependent Role="TimeCardDetails">
+              <PropertyRef Name="IdJobList" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeCardDetails_timeCard">
+          <End Role="TimeCard" Type="Self.TimeCard" Multiplicity="1" />
+          <End Role="TimeCardDetails" Type="Self.TimeCardDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeCard">
+              <PropertyRef Name="IdTimeCard" />
+            </Principal>
+            <Dependent Role="TimeCardDetails">
+              <PropertyRef Name="IdTimeCard" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_SubContractor">
+          <End Role="SubContractor" Type="Self.SubContractor" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubContractor">
+              <PropertyRef Name="IdSubContractor" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="IdSubContractor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DisasterRecoveryModelStoreContainer">
+          <EntitySet Name="JobList" EntityType="Self.JobList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiteLocations" EntityType="Self.SiteLocations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubContractor" EntityType="Self.SubContractor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeCard" EntityType="Self.TimeCard" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeCardDetails" EntityType="Self.TimeCardDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_JobList_SubContractor" Association="Self.FK_JobList_SubContractor">
+            <End Role="SubContractor" EntitySet="SubContractor" />
+            <End Role="JobList" EntitySet="JobList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeCard_SiteLocations" Association="Self.FK_TimeCard_SiteLocations">
+            <End Role="SiteLocations" EntitySet="SiteLocations" />
+            <End Role="TimeCard" EntitySet="TimeCard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeCard_SubContractor" Association="Self.FK_TimeCard_SubContractor">
+            <End Role="SubContractor" EntitySet="SubContractor" />
+            <End Role="TimeCard" EntitySet="TimeCard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeCard_User" Association="Self.FK_TimeCard_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="TimeCard" EntitySet="TimeCard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimecardDetails_JobList" Association="Self.FK_TimecardDetails_JobList">
+            <End Role="JobList" EntitySet="JobList" />
+            <End Role="TimeCardDetails" EntitySet="TimeCardDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeCardDetails_timeCard" Association="Self.FK_TimeCardDetails_timeCard">
+            <End Role="TimeCard" EntitySet="TimeCard" />
+            <End Role="TimeCardDetails" EntitySet="TimeCardDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_SubContractor" Association="Self.FK_User_SubContractor">
+            <End Role="SubContractor" EntitySet="SubContractor" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DisasterRecoveryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="JobList">
+          <Key>
+            <PropertyRef Name="IdJobList" />
+          </Key>
+          <Property Name="IdJobList" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSubContractor" Type="Int32" Nullable="false" />
+          <Property Name="JobName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="JobDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Rate" Type="Decimal" Precision="2" Scale="0" />
+          <Property Name="MaxHour" Type="Int32" />
+          <Property Name="LaborStatus" Type="Int32" />
+          <NavigationProperty Name="SubContractor" Relationship="Self.FK_JobList_SubContractor" FromRole="JobList" ToRole="SubContractor" />
+          <NavigationProperty Name="TimeCardDetails" Relationship="Self.FK_TimecardDetails_JobList" FromRole="JobList" ToRole="TimeCardDetails" />
+        </EntityType>
+        <EntityType Name="SiteLocation">
+          <Key>
+            <PropertyRef Name="SiteID" />
+          </Key>
+          <Property Name="SiteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SiteCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ZipCode" Type="Int32" />
+          <NavigationProperty Name="TimeCards" Relationship="Self.FK_TimeCard_SiteLocations" FromRole="SiteLocations" ToRole="TimeCard" />
+        </EntityType>
+        <EntityType Name="SubContractor">
+          <Key>
+            <PropertyRef Name="IdSubContractor" />
+          </Key>
+          <Property Name="IdSubContractor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubContractorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ContractorAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SubContractorStatus" Type="Int32" />
+          <NavigationProperty Name="JobLists" Relationship="Self.FK_JobList_SubContractor" FromRole="SubContractor" ToRole="JobList" />
+          <NavigationProperty Name="TimeCards" Relationship="Self.FK_TimeCard_SubContractor" FromRole="SubContractor" ToRole="TimeCard" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_SubContractor" FromRole="SubContractor" ToRole="User" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TimeCard">
+          <Key>
+            <PropertyRef Name="IdTimeCard" />
+          </Key>
+          <Property Name="IdTimeCard" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteID" Type="Int32" Nullable="false" />
+          <Property Name="IdSubContractor" Type="Int32" Nullable="false" />
+          <Property Name="TotalHours" Type="Int32" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="2" Scale="0" />
+          <Property Name="TimeStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="RegDate" Type="DateTime" Precision="3" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SiteLocation" Relationship="Self.FK_TimeCard_SiteLocations" FromRole="TimeCard" ToRole="SiteLocations" />
+          <NavigationProperty Name="SubContractor" Relationship="Self.FK_TimeCard_SubContractor" FromRole="TimeCard" ToRole="SubContractor" />
+          <NavigationProperty Name="User" Relationship="Self.FK_TimeCard_User" FromRole="TimeCard" ToRole="User" />
+          <NavigationProperty Name="TimeCardDetails" Relationship="Self.FK_TimeCardDetails_timeCard" FromRole="TimeCard" ToRole="TimeCardDetails" />
+        </EntityType>
+        <EntityType Name="TimeCardDetail">
+          <Key>
+            <PropertyRef Name="IdTimeCard" />
+            <PropertyRef Name="IdJobList" />
+          </Key>
+          <Property Name="IdTimeCard" Type="Int32" Nullable="false" />
+          <Property Name="IdJobList" Type="Int32" Nullable="false" />
+          <Property Name="Hours" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="2" Scale="0" />
+          <NavigationProperty Name="JobList" Relationship="Self.FK_TimecardDetails_JobList" FromRole="TimeCardDetails" ToRole="JobList" />
+          <NavigationProperty Name="TimeCard" Relationship="Self.FK_TimeCardDetails_timeCard" FromRole="TimeCardDetails" ToRole="TimeCard" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UserPassWord" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UserStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IsAdm" Type="Int32" />
+          <Property Name="IdSubContractor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SubContractor" Relationship="Self.FK_User_SubContractor" FromRole="User" ToRole="SubContractor" />
+          <NavigationProperty Name="TimeCards" Relationship="Self.FK_TimeCard_User" FromRole="User" ToRole="TimeCard" />
+        </EntityType>
+        <Association Name="FK_JobList_SubContractor">
+          <End Role="SubContractor" Type="Self.SubContractor" Multiplicity="1" />
+          <End Role="JobList" Type="Self.JobList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubContractor">
+              <PropertyRef Name="IdSubContractor" />
+            </Principal>
+            <Dependent Role="JobList">
+              <PropertyRef Name="IdSubContractor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimecardDetails_JobList">
+          <End Role="JobList" Type="Self.JobList" Multiplicity="1" />
+          <End Role="TimeCardDetails" Type="Self.TimeCardDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JobList">
+              <PropertyRef Name="IdJobList" />
+            </Principal>
+            <Dependent Role="TimeCardDetails">
+              <PropertyRef Name="IdJobList" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeCard_SiteLocations">
+          <End Role="SiteLocations" Type="Self.SiteLocation" Multiplicity="1" />
+          <End Role="TimeCard" Type="Self.TimeCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SiteLocations">
+              <PropertyRef Name="SiteID" />
+            </Principal>
+            <Dependent Role="TimeCard">
+              <PropertyRef Name="SiteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeCard_SubContractor">
+          <End Role="SubContractor" Type="Self.SubContractor" Multiplicity="1" />
+          <End Role="TimeCard" Type="Self.TimeCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubContractor">
+              <PropertyRef Name="IdSubContractor" />
+            </Principal>
+            <Dependent Role="TimeCard">
+              <PropertyRef Name="IdSubContractor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_SubContractor">
+          <End Role="SubContractor" Type="Self.SubContractor" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubContractor">
+              <PropertyRef Name="IdSubContractor" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="IdSubContractor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeCard_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="TimeCard" Type="Self.TimeCard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="TimeCard">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeCardDetails_timeCard">
+          <End Role="TimeCard" Type="Self.TimeCard" Multiplicity="1" />
+          <End Role="TimeCardDetails" Type="Self.TimeCardDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeCard">
+              <PropertyRef Name="IdTimeCard" />
+            </Principal>
+            <Dependent Role="TimeCardDetails">
+              <PropertyRef Name="IdTimeCard" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DisasterRecoveryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="JobLists" EntityType="Self.JobList" />
+          <EntitySet Name="SiteLocations" EntityType="Self.SiteLocation" />
+          <EntitySet Name="SubContractors" EntityType="Self.SubContractor" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TimeCards" EntityType="Self.TimeCard" />
+          <EntitySet Name="TimeCardDetails" EntityType="Self.TimeCardDetail" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_JobList_SubContractor" Association="Self.FK_JobList_SubContractor">
+            <End Role="SubContractor" EntitySet="SubContractors" />
+            <End Role="JobList" EntitySet="JobLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimecardDetails_JobList" Association="Self.FK_TimecardDetails_JobList">
+            <End Role="JobList" EntitySet="JobLists" />
+            <End Role="TimeCardDetails" EntitySet="TimeCardDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeCard_SiteLocations" Association="Self.FK_TimeCard_SiteLocations">
+            <End Role="SiteLocations" EntitySet="SiteLocations" />
+            <End Role="TimeCard" EntitySet="TimeCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeCard_SubContractor" Association="Self.FK_TimeCard_SubContractor">
+            <End Role="SubContractor" EntitySet="SubContractors" />
+            <End Role="TimeCard" EntitySet="TimeCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_SubContractor" Association="Self.FK_User_SubContractor">
+            <End Role="SubContractor" EntitySet="SubContractors" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeCard_User" Association="Self.FK_TimeCard_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="TimeCard" EntitySet="TimeCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeCardDetails_timeCard" Association="Self.FK_TimeCardDetails_timeCard">
+            <End Role="TimeCard" EntitySet="TimeCards" />
+            <End Role="TimeCardDetails" EntitySet="TimeCardDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DisasterRecoveryModelStoreContainer" CdmEntityContainer="DisasterRecoveryEntities">
+          <EntitySetMapping Name="JobLists">
+            <EntityTypeMapping TypeName="DisasterRecoveryModel.JobList">
+              <MappingFragment StoreEntitySet="JobList">
+                <ScalarProperty Name="IdJobList" ColumnName="IdJobList" />
+                <ScalarProperty Name="IdSubContractor" ColumnName="IdSubContractor" />
+                <ScalarProperty Name="JobName" ColumnName="JobName" />
+                <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="MaxHour" ColumnName="MaxHour" />
+                <ScalarProperty Name="LaborStatus" ColumnName="LaborStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiteLocations">
+            <EntityTypeMapping TypeName="DisasterRecoveryModel.SiteLocation">
+              <MappingFragment StoreEntitySet="SiteLocations">
+                <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="SiteCode" ColumnName="SiteCode" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubContractors">
+            <EntityTypeMapping TypeName="DisasterRecoveryModel.SubContractor">
+              <MappingFragment StoreEntitySet="SubContractor">
+                <ScalarProperty Name="IdSubContractor" ColumnName="IdSubContractor" />
+                <ScalarProperty Name="SubContractorName" ColumnName="SubContractorName" />
+                <ScalarProperty Name="ContractorAddress" ColumnName="ContractorAddress" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="SubContractorStatus" ColumnName="SubContractorStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DisasterRecoveryModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeCards">
+            <EntityTypeMapping TypeName="DisasterRecoveryModel.TimeCard">
+              <MappingFragment StoreEntitySet="TimeCard">
+                <ScalarProperty Name="IdTimeCard" ColumnName="IdTimeCard" />
+                <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+                <ScalarProperty Name="IdSubContractor" ColumnName="IdSubContractor" />
+                <ScalarProperty Name="TotalHours" ColumnName="TotalHours" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="TimeStatus" ColumnName="TimeStatus" />
+                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeCardDetails">
+            <EntityTypeMapping TypeName="DisasterRecoveryModel.TimeCardDetail">
+              <MappingFragment StoreEntitySet="TimeCardDetails">
+                <ScalarProperty Name="IdTimeCard" ColumnName="IdTimeCard" />
+                <ScalarProperty Name="IdJobList" ColumnName="IdJobList" />
+                <ScalarProperty Name="Hours" ColumnName="Hours" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DisasterRecoveryModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserPassWord" ColumnName="UserPassWord" />
+                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+                <ScalarProperty Name="IsAdm" ColumnName="IsAdm" />
+                <ScalarProperty Name="IdSubContractor" ColumnName="IdSubContractor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
