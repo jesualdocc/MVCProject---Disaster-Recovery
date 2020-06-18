@@ -7,7 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DisasterRecovery.Models;
-// new test
+// new test 2
 
 namespace DisasterRecovery.Controllers
 {
