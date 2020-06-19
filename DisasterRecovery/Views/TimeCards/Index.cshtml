@@ -4,39 +4,53 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+    <center>
+        <h2>Timesheet Submission</h2>
+    </center>
+
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Enter New Timesheet", "Create")
 </p>
+
+<center>
+    <p>
+        Submission History
+    </p>
+    <hr>
+</center>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.TotalHours)
+            Site Code
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TotalAmount)
+            Contractor Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TimeStatus)
+            Total Hours
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RegDate)
+            Total Amount
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SiteLocation.LocationName)
+            Submission Date
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SubContractor.SubContractorName)
+            Submission Status
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.UserName)
-        </th>
+
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SiteLocation.SiteCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.TotalHours)
         </td>
@@ -44,20 +58,12 @@
             @Html.DisplayFor(modelItem => item.TotalAmount)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TimeStatus)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.RegDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SiteLocation.LocationName)
+            @Html.DisplayFor(modelItem => item.TimeStatus)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.UserName)
-        </td>
+       
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.IdTimeCard }) |
             @Html.ActionLink("Details", "Details", new { id=item.IdTimeCard }) |
