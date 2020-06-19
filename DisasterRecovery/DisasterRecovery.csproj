@@ -313,6 +313,7 @@
     <Content Include="obj\Debug\edmxResourcesToEmbed\Models\DisasterRecoveryModel.csdl" />
     <Content Include="obj\Debug\edmxResourcesToEmbed\Models\DisasterRecoveryModel.msl" />
     <Content Include="obj\Debug\edmxResourcesToEmbed\Models\DisasterRecoveryModel.ssdl" />
+    <Content Include="Views\Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
