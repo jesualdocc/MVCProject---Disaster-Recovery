@@ -1,0 +1,14 @@
+@import '/Content/bootstrap.min.css';
+@import 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+@import '/Content/config.css';
+@import '/Content/home.css';
+@import '/Content/navbar.css';
+@import '/Content/alerts.css';
+@import '/Content/breadcrumb.css';
+@import '/Content/buttons.css';
+@import '/Content/tables.css';
+@import '/Content/modals.css';
+@import '/Content/forms.css';
+@import '/Content/settings.css';
+@import '/Content/login.css';
+@import '/Content/responsive.css';

@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<h2>login</h2>
+
+<form class="form-horizontal" role="form">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Email">E-mail</label>
+            <input class="form-control" id="Email" name="Email" type="text" placeholder="E-mail" />
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Password">Password</label>
+            <input class="form-control" id="Password" name="Password" type="password" placeholder="Password" />
+        </div>
+    </div>
+    <div class="col-md-offset-2 col-md-10 hideRow">
+        <div class="form-group">
+            <div class="checkbox">
+                <input id="remember" name="remember" type="checkbox" />
+                <input name="remember" type="hidden" value="false" />
+                <label for="remember">Remember me?</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class=" col-md-12">
+            <input type="button" value="Login" class="btn btn-blue btn-block" id="btn-login" />
+        </div>
+    </div>
+</form>

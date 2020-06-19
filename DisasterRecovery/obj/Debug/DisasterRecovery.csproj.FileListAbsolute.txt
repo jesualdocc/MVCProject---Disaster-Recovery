@@ -158,7 +158,6 @@ C:\Users\Kelvin\source\repos\MVCProject---Disaster-Recovery\DisasterRecovery\bin
 C:\Users\Kelvin\source\repos\MVCProject---Disaster-Recovery\DisasterRecovery\bin\Newtonsoft.Json.xml
 C:\Users\Kelvin\source\repos\MVCProject---Disaster-Recovery\DisasterRecovery\bin\Antlr3.Runtime.pdb
 C:\Users\Kelvin\source\repos\MVCProject---Disaster-Recovery\DisasterRecovery\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Kelvin\source\repos\MVCProject---Disaster-Recovery\DisasterRecovery\obj\Debug\DisasterRecovery.csprojAssemblyReference.cache
 C:\Users\Kelvin\source\repos\MVCProject---Disaster-Recovery\DisasterRecovery\obj\Debug\DisasterRecovery.csproj.CoreCompileInputs.cache
 C:\Users\Kelvin\source\repos\MVCProject---Disaster-Recovery\DisasterRecovery\obj\Debug\DisasterRecovery.csproj.CopyComplete
 C:\Users\Kelvin\source\repos\MVCProject---Disaster-Recovery\DisasterRecovery\obj\Debug\DisasterRecovery.dll
