@@ -4,7 +4,7 @@
 <head>
     <link rel="stylesheet" href="~/Content/main.css" />
 
-    <title>Disaster Recovery</title>
+    <title>Admin - Disaster Recovery</title>
 </head>
 
 <body>
@@ -33,12 +33,21 @@
                     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user-circle" aria-hidden="true"></i> Hi, Niag Alves
+                                <i class="fa fa-user-circle" aria-hidden="true"></i> Welcome @Session["LogedUserName"]
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="settings.html"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+                                @{if (@Session["LogedUserName"] == null)
+                                    {
+                                        <a class="dropdown-item" href="~/Login/Index"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign in</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" href="~/Login/Logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a>
+                                    }
+                                }
+
                             </div>
                         </li>
                     </ul>
@@ -48,8 +57,8 @@
                 <div class="row">
                     <div class="card col-md-12">
                         <div class="pd-15">
-                            @RenderBody()
-                            @RenderSection("scripts", required: false)
+                            @RenderBody();
+                            @RenderSection("scripts", required: false);
                         </div>
                     </div>
                 </div>

@@ -52,6 +52,7 @@ namespace DisasterRecovery.Controllers
         {
             if (ModelState.IsValid)
             {
+                user.UserPassWord = LoginController.HashPass(user.UserPassWord);
                 db.Users.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -86,6 +87,7 @@ namespace DisasterRecovery.Controllers
         {
             if (ModelState.IsValid)
             {
+                user.UserPassWord = LoginController.HashPass(user.UserPassWord);
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
