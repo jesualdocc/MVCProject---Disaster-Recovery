@@ -21,6 +21,44 @@ namespace DisasterRecovery.Controllers
             return View(timeCards.ToList());
         }
 
+        public ActionResult IndexAdm()
+        {
+            var timeCards = db.TimeCards.Include(t => t.SiteLocation).Include(t => t.SubContractor).Include(t => t.User);
+            return View(timeCards.ToList());
+        }
+
+        public ActionResult Approve(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TimeCard timeCard = db.TimeCards.Find(id);
+            if (timeCard == null)
+            {
+                return HttpNotFound();
+            }
+            
+            timeCard.TimeStatus = "Finalized";
+            db.Entry(timeCard).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("IndexAdm");
+        }
+        // GET: TimeCards/ReviewSubmission/5
+        public ActionResult ReviewSubmission(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TimeCard timeCard = db.TimeCards.Find(id);
+            if (timeCard == null)
+            {
+                return HttpNotFound();
+            }
+            return View(timeCard);
+        }
+
         // GET: TimeCards/Details/5
         public ActionResult Details(int? id)
         {
@@ -132,6 +170,14 @@ namespace DisasterRecovery.Controllers
         {
             TimeCard timeCard = db.TimeCards.Find(id);
             db.TimeCards.Remove(timeCard);
+
+            var tDetails = db.TimeCardDetails.Where(v => v.IdTimeCard == id);
+
+            if (tDetails != null)
+            {
+                db.TimeCardDetails.RemoveRange(tDetails);
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
