@@ -1,90 +1,78 @@
-﻿@model PagedList.IPagedList<DisasterRecovery.Models.JobList>
-@using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+﻿@model IEnumerable<DisasterRecovery.Models.JobList>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Job List Management</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <br />
-@using (Html.BeginForm("Index", "JobLists", FormMethod.Get))
-{
-    <p>
-        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Search" />
-    </p>
-}
-<br />
-<table class="table">
-    <tr>
-        <th>
-            @*@Html.DisplayNameFor(model => model.JobName)*@
-            @Html.ActionLink("JobName", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.JobDescription)*@
-            @Html.ActionLink("JobDescription", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            Rate
-        </th>
-        <th>
-            MaxHour
-        </th>
-        <th>
-            LaborStatus
-        </th>
-        <th>
-            SubContractorName
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+<table class="table" id="JoblistTable">
+    <thead class="">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxHour)
-            </td>
-            <td>
-                @if (item.LaborStatus == 1)
-                {
-                    <p>Inactive</p>
-                }
-                else
-                {
-                    <p>Active</p>
-                }
-                @*@Html.DisplayFor(modelItem => item.LaborStatus)*@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.IdJobList }) |
-                @Html.ActionLink("Details", "Details", new { id = item.IdJobList }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.IdJobList })
-            </td>
+            <th>
+                @*@Html.DisplayNameFor(model => model.JobName)*@
+                Job Name
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.JobDescription)*@
+                Job Description
+            </th>
+            <th>
+                Rate
+            </th>
+            <th>
+                Maximum Hours
+            </th>
+            <th>
+                Labor Status
+            </th>
+            <th>
+                Contractor Name
+            </th>
+            <th></th>
         </tr>
-    }
+    </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxHour)
+                </td>
+                <td>
+                    @if (item.LaborStatus == 1)
+                    {
+                        <p>Inactive</p>
+                    }
+                    else
+                    {
+                        <p>Active</p>
+                    }
+                    @*@Html.DisplayFor(modelItem => item.LaborStatus)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdJobList }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdJobList }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdJobList })
+                </td>
+            </tr>
+        }
 
 </table>
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

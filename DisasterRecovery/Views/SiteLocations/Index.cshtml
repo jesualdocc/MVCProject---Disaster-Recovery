@@ -1,65 +1,50 @@
-﻿@model PagedList.IPagedList<DisasterRecovery.Models.SiteLocation>
-@using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-
+﻿@model IEnumerable<DisasterRecovery.Models.SiteLocation>
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Site Locations Management</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<br />
-@using (Html.BeginForm("Index", "SiteLocations", FormMethod.Get))
-{
-    <p>
-        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Search" />
-    </p>
-}
-<br />
-<table class="table">
-    <tr>
-        <th>
-            @*@Html.DisplayNameFor(model => model.LocationName)*@
-            @Html.ActionLink("LocationName", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.SiteCode)*@
-            @Html.ActionLink("SiteCode", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            ZipCode
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+<table class="table" id="SiteLocationTable">
+    <thead class="">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LocationName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SiteCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ZipCode)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.SiteID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.SiteID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.SiteID })
-            </td>
+            <th>
+                @*@Html.DisplayNameFor(model => model.LocationName)*@
+                Location Name
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.SiteCode)*@
+                Site Code
+            </th>
+            <th>
+                Zip Code
+            </th>
+            <th></th>
         </tr>
-    }
+    </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZipCode)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.SiteID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.SiteID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.SiteID })
+                </td>
+            </tr>
+        }
 
 </table>
-
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

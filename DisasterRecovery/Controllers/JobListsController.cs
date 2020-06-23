@@ -7,8 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DisasterRecovery.Models;
-using PagedList;
-// new test 2
+
 
 namespace DisasterRecovery.Controllers
 {
@@ -17,51 +16,10 @@ namespace DisasterRecovery.Controllers
         private DisasterRecoveryEntities db = new DisasterRecoveryEntities();
 
         // GET: JobLists
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Index()
         {
-            //var jobLists = db.JobLists.Include(j => j.SubContractor);
-            //return View(jobLists.ToList());
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
-            ViewBag.CurrentFilter = searchString;
-
-            var jobLists = from s in db.JobLists
-                                select s;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                jobLists = jobLists.Where(s => s.JobName.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    jobLists = jobLists.OrderByDescending(s => s.JobName);
-                    break;
-                case "Date":
-                    jobLists = jobLists.OrderBy(s => s.JobDescription);
-                    break;
-                case "date_desc":
-                    jobLists = jobLists.OrderByDescending(s => s.JobDescription);
-                    break;
-                default:
-                    jobLists = jobLists.OrderBy(s => s.JobName);
-                    break;
-            }
-
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
-            return View(jobLists.ToPagedList(pageNumber, pageSize));
+            return View(db.JobLists.ToList());
         }
 
         // GET: JobLists/Details/5
