@@ -3,8 +3,8 @@
 
 <head>
     <link rel="stylesheet" href="~/Content/main.css" />
-
-    <title>Disaster Recovery</title>
+   
+    <title>@ViewBag.Title - Disaster Recovery</title>
 </head>
 
 <body>
@@ -33,12 +33,25 @@
                     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user-circle" aria-hidden="true"></i> Hi, Niag Alves
+                                <i class="fa fa-user-circle" aria-hidden="true"></i> Welcome @Session["LogedUserName"]
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="settings.html"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+                                @{if (@Session["LogedUserRole"] != null)
+                                    {
+                                       <a class="dropdown-item" href="~/Users/Details/@Session["LogedUserID"]"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+                                    }
+                                }
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+                                @{if (@Session["LogedUserName"] == null)
+                                    {
+                                        <a class="dropdown-item" href="~/Login/Index"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign in</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" href="~/Login/Logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a>
+                                    }
+                                }
+
                             </div>
                         </li>
                     </ul>
@@ -62,7 +75,15 @@
     <script src="~/Scripts/popper.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/template-functions.js"></script>
-
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#userTable').DataTable();
+        });
+    </script>
 </body>
 
 </html>

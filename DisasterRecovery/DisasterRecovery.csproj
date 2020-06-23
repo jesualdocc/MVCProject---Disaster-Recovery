@@ -53,6 +53,12 @@
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -259,6 +265,7 @@
     <Content Include="Content\main.css" />
     <Content Include="Content\modals.css" />
     <Content Include="Content\navbar.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\responsive.css" />
     <Content Include="Content\settings.css" />
     <Content Include="Content\tables.css" />
@@ -287,11 +294,6 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\template-functions.js" />
     <Content Include="Web.config" />
-    <Content Include="Views\Login\Create.cshtml" />
-    <Content Include="Views\Login\Delete.cshtml" />
-    <Content Include="Views\Login\Details.cshtml" />
-    <Content Include="Views\Login\Edit.cshtml" />
-    <Content Include="Views\Login\Index2.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="bin\DisasterRecovery.dll.config" />
@@ -313,6 +315,8 @@
     <Content Include="obj\Debug\edmxResourcesToEmbed\Models\DisasterRecoveryModel.csdl" />
     <Content Include="obj\Debug\edmxResourcesToEmbed\Models\DisasterRecoveryModel.msl" />
     <Content Include="obj\Debug\edmxResourcesToEmbed\Models\DisasterRecoveryModel.ssdl" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Shared\_LayoutContractor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

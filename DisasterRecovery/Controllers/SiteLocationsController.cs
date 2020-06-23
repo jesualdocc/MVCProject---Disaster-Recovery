@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DisasterRecovery.Models;
+using PagedList;
 
 namespace DisasterRecovery.Controllers
 {
@@ -15,9 +16,50 @@ namespace DisasterRecovery.Controllers
         private DisasterRecoveryEntities db = new DisasterRecoveryEntities();
 
         // GET: SiteLocations
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            return View(db.SiteLocations.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            var SiteLocations = from s in db.SiteLocations
+                                select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                SiteLocations = SiteLocations.Where(s => s.LocationName.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    SiteLocations = SiteLocations.OrderByDescending(s => s.LocationName);
+                    break;
+                case "Date":
+                    SiteLocations = SiteLocations.OrderBy(s => s.SiteCode);
+                    break;
+                case "date_desc":
+                    SiteLocations = SiteLocations.OrderByDescending(s => s.SiteCode);
+                    break;
+                default:
+                    SiteLocations = SiteLocations.OrderBy(s => s.LocationName);
+                    break;
+            }
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(SiteLocations.ToPagedList(pageNumber, pageSize));
+            //return View(db.SiteLocations.ToList());
         }
 
         // GET: SiteLocations/Details/5

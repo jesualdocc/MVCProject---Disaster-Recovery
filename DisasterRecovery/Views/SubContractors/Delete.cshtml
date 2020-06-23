@@ -48,7 +48,14 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.SubContractorStatus)
+            @if (@Html.DisplayFor(model => model.SubContractorStatus).ToString() == "1")
+            {
+                <p>Inactive</p>
+            }
+            else
+            {
+                <p>Active</p>
+            }
         </dd>
 
     </dl>

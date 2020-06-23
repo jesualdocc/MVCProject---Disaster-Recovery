@@ -4,77 +4,80 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+    <h2>@Html.DisplayFor(model => model.FirstName)'s Details</h2>
+<div class="row">
+    <div class="col">
+        <dl>
+            <dt>
+                User Name:
+            </dt>
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="dl-horizontal">
+            <dd>
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+
+            <dt>
+                First Name:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+
+            <dt>
+                Last Name:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+
+            <dt>
+                Email:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+</div>
+    <div class="col">
         <dt>
-            @Html.DisplayNameFor(model => model.UserName)
+            Status:
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UserName)
+            @{ if (Model.UserStatus == "1")
+                {
+                    <p>Active</p>
+                }
+                else
+                { <p>Inactive</p> }
+            }
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
+            User Role:
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FirstName)
+            @{ if (Model.IsAdm == 1)
+                {
+                    <p>Administrator</p>
+                }
+                else
+                { <p>Contractor</p> }
+            }
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserPassWord)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserPassWord)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserStatus)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserStatus)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsAdm)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsAdm)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SubContractor.SubContractorName)
+            Sub Contractor:
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.SubContractor.SubContractorName)
         </dd>
-
-    </dl>
+        </dl>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.IdUser }) |
