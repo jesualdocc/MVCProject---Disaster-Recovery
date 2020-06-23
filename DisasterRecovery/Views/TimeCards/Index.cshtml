@@ -44,32 +44,40 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.SiteLocation.SiteCode)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TotalHours)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TotalAmount)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RegDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TimeStatus)
+    </td>
+
+    @if (item.TimeStatus == "Under Review" || item.TimeStatus == "Finalized")
+    {
+        <td>@Html.ActionLink("Details", "Details", new { id = item.IdTimeCard }) |</td>
+
+    }
+    else
+    {
         <td>
-            @Html.DisplayFor(modelItem => item.SiteLocation.SiteCode)
+            @Html.ActionLink("Add/Edit Details", "Edit", new { id = item.IdTimeCard }) |
+            @Html.ActionLink("Details", "Details", new { id = item.IdTimeCard })|
+            @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCard })
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TotalHours)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TotalAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RegDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeStatus)
-        </td>
-       
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdTimeCard }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdTimeCard }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdTimeCard })
-        </td>
-    </tr>
+    }
+</tr>
 }
 
 </table>

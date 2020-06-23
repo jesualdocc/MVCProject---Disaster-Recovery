@@ -39,6 +39,7 @@ namespace DisasterRecovery.Controllers
         // GET: TimeCards/Create
         public ActionResult Create()
         {
+            ViewBag.JobID = new SelectList(db.JobLists, "IdJobList", "JobName");
             ViewBag.SiteID = new SelectList(db.SiteLocations, "SiteID", "LocationName");
             ViewBag.IdSubContractor = new SelectList(db.SubContractors, "IdSubContractor", "SubContractorName");
             ViewBag.IdUser = new SelectList(db.Users, "IdUser", "UserName");
@@ -50,13 +51,20 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdTimeCard,SiteID,IdSubContractor,TotalHours,TotalAmount,TimeStatus,RegDate,IdUser")] TimeCard timeCard)
+        public ActionResult Create([Bind(Include = "IdTimeCard,SiteID,IdSubContractor,IdUser")] TimeCard timeCard)
         {
+           
             if (ModelState.IsValid)
             {
+                timeCard.RegDate = DateTime.Now;
+                timeCard.TimeStatus = "Open";
+                
                 db.TimeCards.Add(timeCard);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                TempData["TimeCardID"] = timeCard.IdTimeCard;
+               
+                return RedirectToAction("Create", "TimeCardDetails");
             }
 
             ViewBag.SiteID = new SelectList(db.SiteLocations, "SiteID", "LocationName", timeCard.SiteID);
@@ -127,6 +135,7 @@ namespace DisasterRecovery.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
 
         protected override void Dispose(bool disposing)
         {
