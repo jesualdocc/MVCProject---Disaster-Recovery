@@ -7,7 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DisasterRecovery.Models;
-using PagedList;
 
 namespace DisasterRecovery.Controllers
 {
@@ -16,51 +15,10 @@ namespace DisasterRecovery.Controllers
         private DisasterRecoveryEntities db = new DisasterRecoveryEntities();
 
         // GET: SubContractors
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index()
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            return View(db.SubContractors.ToList());
 
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
-            ViewBag.CurrentFilter = searchString;
-
-            var SubContractor = from s in db.SubContractors
-                           select s;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                SubContractor = SubContractor.Where(s => s.SubContractorName.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    SubContractor = SubContractor.OrderByDescending(s => s.SubContractorName);
-                    break;
-                case "Date":
-                    SubContractor = SubContractor.OrderBy(s => s.ContractorAddress);
-                    break;
-                case "date_desc":
-                    SubContractor = SubContractor.OrderByDescending(s => s.ContractorAddress);
-                    break;
-                default:
-                    SubContractor = SubContractor.OrderBy(s => s.SubContractorName);
-                    break;
-            }
-
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
-            return View(SubContractor.ToPagedList(pageNumber, pageSize));
-
-            //return View(db.SubContractors.ToList());
         }
 
         // GET: SubContractors/Details/5

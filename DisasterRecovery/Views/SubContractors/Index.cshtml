@@ -1,35 +1,24 @@
-﻿@model PagedList.IPagedList<DisasterRecovery.Models.SubContractor>
-@using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-
+﻿@model IEnumerable<DisasterRecovery.Models.SubContractor>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Contractor Management</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<br />
-@using (Html.BeginForm("Index", "SubContractors", FormMethod.Get))
-{
-    <p>
-        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Search" />
-    </p>
-}
-<br />
-<table class="table">
+
+<table class="table" id=" "SubContractorTable">
     <tr>
         <th>
             @*@Html.DisplayNameFor(model => model.SubContractorName)*@
-            @Html.ActionLink("SubContractorName", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            Contractor Name
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.ContractorAddress)*@
-            @Html.ActionLink("ContractorAddress", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+            Contractor Address
         </th>
         <th>
             Email
@@ -38,7 +27,7 @@
             Phone
         </th>
         <th>
-            SubContractorStatus
+            Contractor Status
         </th>
         <th></th>
     </tr>
@@ -80,9 +69,3 @@
     }
 
 </table>
-
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
