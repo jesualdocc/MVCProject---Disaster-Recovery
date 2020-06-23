@@ -7,7 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DisasterRecovery.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
+
 
 namespace DisasterRecovery.Controllers
 {
