@@ -32,32 +32,30 @@ namespace DisasterRecovery.Controllers
 
             if (!String.IsNullOrEmpty(user.UserName))
             {
-                string myPaswd = HashPass(user.UserPassWord);
+                string myPaswd = HashPaswd(user.UserPassWord);
                 User myUser = db.Users.FirstOrDefault
                 (u => u.UserName.Equals(user.UserName) && u.UserPassWord.Equals(myPaswd));
 
                 if (myUser == null) {
                 ViewBag.Message = "Incorrect username or password."; }
 
-            else /*if (remember != false)*/
-            {
-                Session["LogedUserID"] = myUser.IdUser.ToString();
-                Session["LogedUserName"] = myUser.FirstName + " " + myUser.LastName;
-
-                if (myUser.IsAdm == 1)
-                    Session["LogedUserRole"] = "Admin";
                 else
-                    Session["LogedUserRole"] = "Contractor";
+                {
+                    Session["LogedUserID"] = myUser.IdUser.ToString();
+                    Session["LogedUserName"] = myUser.FirstName + " " + myUser.LastName;
 
-                return RedirectToAction("Index", "Home");
-            }
-                
-            }
+                    if (myUser.IsAdm == 1)
+                        Session["LogedUserRole"] = "Admin";
+                    else
+                        Session["LogedUserRole"] = "Contractor";
 
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             return View();
         }
 
-        public static string HashPass(string Pass)
+        public static string HashPaswd(string Pass)
         {
             //create new instance of md5
             MD5 md5 = MD5.Create();
@@ -82,7 +80,7 @@ namespace DisasterRecovery.Controllers
         public bool ValidateHashPass(string inputPass, string storedHashPass)
         {
             
-            string getHashInputData = HashPass(inputPass);
+            string getHashInputData = HashPaswd(inputPass);
 
             if (string.Compare(getHashInputData, storedHashPass) == 0)
             {
