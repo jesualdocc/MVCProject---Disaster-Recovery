@@ -321,6 +321,8 @@
     <Content Include="Models\DisasterRecoveryModel.edmx.diagram">
       <DependentUpon>DisasterRecoveryModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\TimeCards\IndexAdm.cshtml" />
+    <Content Include="Views\TimeCards\ReviewSubmission.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

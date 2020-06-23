@@ -11,7 +11,9 @@ namespace DisasterRecovery.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,12 +21,19 @@ namespace DisasterRecovery.Models
         {
             this.TimeCards = new HashSet<TimeCard>();
         }
-    
+
+        
         public int IdUser { get; set; }
+        [DataType(DataType.Text)]
         public string UserName { get; set; }
+        [DataType(DataType.Text)]
         public string FirstName { get; set; }
+        [DataType(DataType.Text)]
         public string LastName { get; set; }
+        [RegularExpression("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", ErrorMessage = "Must be a valid email")]
         public string Email { get; set; }
+        [Required(ErrorMessage = "A Password is required.")]
+        [DataType(DataType.Password)]
         public string UserPassWord { get; set; }
         public string UserStatus { get; set; }
         public int IsAdm { get; set; }
@@ -33,5 +42,7 @@ namespace DisasterRecovery.Models
         public virtual SubContractor SubContractor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TimeCard> TimeCards { get; set; }
+
+        
     }
 }

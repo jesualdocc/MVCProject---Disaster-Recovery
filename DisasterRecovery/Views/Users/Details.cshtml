@@ -81,5 +81,11 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.IdUser }) |
+
+    @if (Session["LogedUserRole"] == "Admin")
+    {
     @Html.ActionLink("Back to List", "Index")
+    
+    }
+
 </p>

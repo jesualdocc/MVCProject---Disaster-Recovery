@@ -2,6 +2,12 @@
 
 @{
     ViewBag.Title = "Create";
+
+    ViewBag.Title = "Index";
+    if (Session["LogedUserRole"] == "Contractor")
+    {
+        Layout = "~/Views/Shared/_LayoutContractor.cshtml";
+    }
 }
 
     <center>

@@ -1,9 +1,13 @@
 ﻿@model IEnumerable<DisasterRecovery.Models.TimeCard>
 
+
 @{
     ViewBag.Title = "Index";
+    if (Session["LogedUserRole"] == "Contractor")
+    {
+        Layout = "~/Views/Shared/_LayoutContractor.cshtml";
+    }
 }
-
     <center>
         <h2>Timesheet Submission</h2>
     </center>

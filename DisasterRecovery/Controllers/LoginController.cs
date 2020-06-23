@@ -45,11 +45,18 @@ namespace DisasterRecovery.Controllers
                     Session["LogedUserName"] = myUser.FirstName + " " + myUser.LastName;
 
                     if (myUser.IsAdm == 1)
+                    {
                         Session["LogedUserRole"] = "Admin";
+                        Session["Users"] = myUser.UserName;
+                    }
                     else
+                    {
                         Session["LogedUserRole"] = "Contractor";
+                        return RedirectToAction("Index", "TimeCards");
+                    }
+                        
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("IndexAdm", "TimeCards");
                 }
             }
             return View();
