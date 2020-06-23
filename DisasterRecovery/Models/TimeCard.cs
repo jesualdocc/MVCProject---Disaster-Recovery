@@ -24,7 +24,7 @@ namespace DisasterRecovery.Models
         public int SiteID { get; set; }
         public int IdSubContractor { get; set; }
         public Nullable<int> TotalHours { get; set; }
-        public Nullable<decimal> TotalAmount { get; set; }
+        public Nullable<double> TotalAmount { get; set; }
         public string TimeStatus { get; set; }
         public Nullable<System.DateTime> RegDate { get; set; }
         public int IdUser { get; set; }

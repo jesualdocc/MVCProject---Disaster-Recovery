@@ -4,13 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5762cdd019f6464a99b340c94c9fb534" Name="Diagram1">
-        <EntityTypeShape EntityType="DisasterRecoveryModel.JobList" Width="1.5" PointX="3.25" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DisasterRecoveryModel.SiteLocation" Width="1.5" PointX="3.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DisasterRecoveryModel.SubContractor" Width="1.5" PointX="0.5" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DisasterRecoveryModel.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DisasterRecoveryModel.TimeCard" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DisasterRecoveryModel.TimeCardDetail" Width="1.5" PointX="9.25" PointY="1.875" IsExpanded="true" />
+      <Diagram DiagramId="a685703a05d84d4d9ce627b3194bea7f" Name="Diagram1">
+        <EntityTypeShape EntityType="DisasterRecoveryModel.JobList" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DisasterRecoveryModel.SiteLocation" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DisasterRecoveryModel.SubContractor" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DisasterRecoveryModel.TimeCard" Width="1.5" PointX="5.25" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="DisasterRecoveryModel.TimeCardDetail" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DisasterRecoveryModel.User" Width="1.5" PointX="3" PointY="11" IsExpanded="true" />
         <AssociationConnector Association="DisasterRecoveryModel.FK_JobList_SubContractor" ManuallyRouted="false" />
         <AssociationConnector Association="DisasterRecoveryModel.FK_TimecardDetails_JobList" ManuallyRouted="false" />
