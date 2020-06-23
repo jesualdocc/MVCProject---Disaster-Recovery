@@ -20,7 +20,6 @@ namespace DisasterRecovery.Models
         {
             this.TimeCards = new HashSet<TimeCard>();
         }
-    
         public int IdUser { get; set; }
         [DataType(DataType.Text)]
         public string UserName { get; set; }
@@ -29,15 +28,13 @@ namespace DisasterRecovery.Models
         [DataType(DataType.Text)]
         public string LastName { get; set; }
         [RegularExpression("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", ErrorMessage = "Must be a valid email")]
-
         public string Email { get; set; }
+        [Required(ErrorMessage = "A Password is required.")]
         [DataType(DataType.Password)]
-
         public string UserPassWord { get; set; }
         public string UserStatus { get; set; }
         public Nullable<int> IsAdm { get; set; }
         public int IdSubContractor { get; set; }
-    
         public virtual SubContractor SubContractor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TimeCard> TimeCards { get; set; }

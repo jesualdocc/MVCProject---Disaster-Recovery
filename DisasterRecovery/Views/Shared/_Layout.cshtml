@@ -3,8 +3,8 @@
 
 <head>
     <link rel="stylesheet" href="~/Content/main.css" />
-
-    <title>Admin - Disaster Recovery</title>
+   
+    <title>@ViewBag.Title - Disaster Recovery</title>
 </head>
 
 <body>
@@ -36,7 +36,11 @@
                                 <i class="fa fa-user-circle" aria-hidden="true"></i> Welcome @Session["LogedUserName"]
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="settings.html"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+                                @{if (@Session["LogedUserRole"] != null)
+                                    {
+                                       <a class="dropdown-item" href="~/Users/Details/@Session["LogedUserID"]"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+                                    }
+                                }
                                 <div class="dropdown-divider"></div>
                                 @{if (@Session["LogedUserName"] == null)
                                     {
@@ -57,8 +61,8 @@
                 <div class="row">
                     <div class="card col-md-12">
                         <div class="pd-15">
-                            @RenderBody();
-                            @RenderSection("scripts", required: false);
+                            @RenderBody()
+                            @RenderSection("scripts", required: false)
                         </div>
                     </div>
                 </div>
@@ -71,7 +75,15 @@
     <script src="~/Scripts/popper.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/template-functions.js"></script>
-
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#userTable').DataTable();
+        });
+    </script>
 </body>
 
 </html>

@@ -1,69 +1,87 @@
 ﻿@model IEnumerable<DisasterRecovery.Models.User>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "User Management";
+
 }
 
-<h2>Index</h2>
+    <h2>User Management</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserStatus)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsAdm)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SubContractor.SubContractorName)
-        </th>
-        <th></th>
-    </tr>
+<table class="table" id="userTable">
+    <thead class="">
+        <tr>
+            <th scope="col">
+                User Name
+            </th>
+            <th scope="col">
+                First Name
+            </th>
+            <th scope="col">
+                Last Name
+            </th>
+            <th scope="col">
+                Email
+            </th>
+            <th scope="col">
+                Status
+            </th>
+            <th scope="col">
+                Role
+            </th>
+            <th scope="col">
+                Sub Contractor
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsAdm)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdUser }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdUser }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdUser })
-        </td>
-    </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @{ if (item.UserStatus == "1")
+                        {
+                            <p>Active</p>
+                        }
+                        else
+                        { <p>Inactive</p> }
+                    }
+                    @* @Html.DisplayFor(modelItem => item.UserStatus)*@
+                </td>
+                <td>
+                    @{ if (item.IsAdm == 1)
+                        {
+                            <p>Admin</p>
+                        }
+                        else
+                        { <p>Contractor</p> }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdUser }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdUser }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdUser })
+                </td>
+            </tr>
+        }
 
 </table>
+
