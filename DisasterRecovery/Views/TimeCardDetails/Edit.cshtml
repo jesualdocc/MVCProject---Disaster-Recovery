@@ -2,6 +2,10 @@
 
 @{
     ViewBag.Title = "Edit";
+     if (Session["LogedUserRole"] == "Contractor")
+    {
+        Layout = "~/Views/Shared/_LayoutContractor.cshtml";
+    }
 }
 
 <h2>Edit</h2>

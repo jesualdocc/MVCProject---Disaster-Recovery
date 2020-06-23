@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<DisasterRecovery.Models.TimeCard>
 
-
 @{
     ViewBag.Title = "Index";
-    if (Session["LogedUserRole"] == "Contractor")
+     if (Session["LogedUserRole"] == "Contractor")
     {
         Layout = "~/Views/Shared/_LayoutContractor.cshtml";
     }
+
 }
+
     <center>
         <h2>Timesheet Submission</h2>
     </center>
@@ -68,18 +69,19 @@
         @Html.DisplayFor(modelItem => item.TimeStatus)
     </td>
 
-    @if (item.TimeStatus == "Under Review" || item.TimeStatus == "Finalized")
+    @if (item.TimeStatus == "Approved" || item.TimeStatus == "Under Review")
     {
-        <td>@Html.ActionLink("Details", "Details", new { id = item.IdTimeCard }) |</td>
+        <td>@Html.ActionLink("Details", "Details", new { id = item.IdTimeCard }) </td>
 
     }
     else
     {
-        <td>
-            @Html.ActionLink("Add/Edit Details", "Edit", new { id = item.IdTimeCard }) |
-            @Html.ActionLink("Details", "Details", new { id = item.IdTimeCard })|
-            @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCard })
-        </td>
+<td>
+    @Html.ActionLink("Edit Main", "Edit", new { id = item.IdTimeCard }) |
+    @Html.ActionLink("Edit Detail", "GoToEditDetailsTC", new { id = item.IdTimeCard }) |
+    @Html.ActionLink("Details", "Details", new { id = item.IdTimeCard })|
+    @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCard })
+</td>
     }
 </tr>
 }
