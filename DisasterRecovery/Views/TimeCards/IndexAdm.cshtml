@@ -1,0 +1,79 @@
+﻿@model IEnumerable<DisasterRecovery.Models.TimeCard>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+    <center>
+        <h2>Timesheet Submission</h2>
+    </center>
+
+
+<center>
+    <p>
+        Submission History
+    </p>
+    <hr>
+</center>
+<table class="table">
+    <tr>
+        <th>
+            Site Code
+        </th>
+        <th>
+            Contractor Name
+        </th>
+        <th>
+            Total Hours
+        </th>
+        <th>
+            Total Amount
+        </th>
+        <th>
+            Submission Date
+        </th>
+        <th>
+            Submission Status
+        </th>
+
+        <th>
+            Submitted by
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.SiteLocation.SiteCode)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TotalHours)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TotalAmount)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RegDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TimeStatus)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.User.FirstName)
+    </td>
+
+    <td>
+        @Html.ActionLink("Review", "ReviewSubmission", new { id = item.IdTimeCard })|
+        @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCard })
+    </td>
+
+</tr>
+}
+
+</table>

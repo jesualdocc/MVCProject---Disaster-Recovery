@@ -1,0 +1,109 @@
+﻿@model DisasterRecovery.Models.TimeCard
+
+@{
+    ViewBag.Title = "ReviewSubmission";
+}
+
+    <center>
+        <h2>Submission Details</h2>
+    </center>
+    <div>
+        <hr />
+
+        <h4>Jobs Performed</h4>
+
+        <table class="table">
+            <tr>
+                <th>
+                    Hours
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Job
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model.TimeCardDetails)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JobList.JobName)
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+
+        <h4>Summary</h4>
+
+        <table class="table">
+            <tr>
+                <th>
+                    Total Hours
+                </th>
+
+                <th>
+                    Total Amount
+                </th>
+
+                <th>
+                    Submission Status
+                </th>
+
+                <th>
+                    Location
+                </th>
+                <th>
+                    Contractor Name
+                </th>
+                <th>
+                    Submitted By
+                </th>
+
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.TotalHours)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.TotalAmount)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.TimeStatus)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.RegDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.SubContractor.SubContractorName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.User.UserName)
+                </td>
+
+            </tr>
+
+        </table>
+
+
+        <p>
+            @Html.ActionLink("Approve", "Approve", new { id = Model.IdTimeCard })
+            
+            @Html.ActionLink("Edit", "Edit", new { id = Model.IdTimeCard }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>

@@ -89,14 +89,17 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdTimeCard,SiteID,IdSubContractor,IdUser")] TimeCard timeCard)
+        public ActionResult Create([Bind(Include = "IdTimeCard,SiteID,IdSubContractor")] TimeCard timeCard)
         {
            
             if (ModelState.IsValid)
             {
                 timeCard.RegDate = DateTime.Now;
                 timeCard.TimeStatus = "Open";
-                
+
+
+                timeCard.IdUser = Convert.ToInt32(Session["LogedUserID"]);
+
                 db.TimeCards.Add(timeCard);
                 db.SaveChanges();
 
