@@ -24,7 +24,7 @@ namespace DisasterRecovery.Models
         public int IdSubContractor { get; set; }
         public string JobName { get; set; }
         public string JobDescription { get; set; }
-        public Nullable<decimal> Rate { get; set; }
+        public Nullable<double> Rate { get; set; }
         public Nullable<int> MaxHour { get; set; }
         public Nullable<int> LaborStatus { get; set; }
     

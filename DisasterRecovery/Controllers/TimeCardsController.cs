@@ -21,6 +21,44 @@ namespace DisasterRecovery.Controllers
             return View(timeCards.ToList());
         }
 
+        public ActionResult IndexAdm()
+        {
+            var timeCards = db.TimeCards.Include(t => t.SiteLocation).Include(t => t.SubContractor).Include(t => t.User);
+            return View(timeCards.ToList());
+        }
+
+        public ActionResult Approve(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TimeCard timeCard = db.TimeCards.Find(id);
+            if (timeCard == null)
+            {
+                return HttpNotFound();
+            }
+            
+            timeCard.TimeStatus = "Finalized";
+            db.Entry(timeCard).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("IndexAdm");
+        }
+        // GET: TimeCards/ReviewSubmission/5
+        public ActionResult ReviewSubmission(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TimeCard timeCard = db.TimeCards.Find(id);
+            if (timeCard == null)
+            {
+                return HttpNotFound();
+            }
+            return View(timeCard);
+        }
+
         // GET: TimeCards/Details/5
         public ActionResult Details(int? id)
         {
@@ -39,6 +77,7 @@ namespace DisasterRecovery.Controllers
         // GET: TimeCards/Create
         public ActionResult Create()
         {
+            ViewBag.JobID = new SelectList(db.JobLists, "IdJobList", "JobName");
             ViewBag.SiteID = new SelectList(db.SiteLocations, "SiteID", "LocationName");
             ViewBag.IdSubContractor = new SelectList(db.SubContractors, "IdSubContractor", "SubContractorName");
             ViewBag.IdUser = new SelectList(db.Users, "IdUser", "UserName");
@@ -50,13 +89,23 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdTimeCard,SiteID,IdSubContractor,TotalHours,TotalAmount,TimeStatus,RegDate,IdUser")] TimeCard timeCard)
+        public ActionResult Create([Bind(Include = "IdTimeCard,SiteID,IdSubContractor")] TimeCard timeCard)
         {
+           
             if (ModelState.IsValid)
             {
+                timeCard.RegDate = DateTime.Now;
+                timeCard.TimeStatus = "Open";
+
+
+                timeCard.IdUser = Convert.ToInt32(Session["LogedUserID"]);
+
                 db.TimeCards.Add(timeCard);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                TempData["TimeCardID"] = timeCard.IdTimeCard;
+               
+                return RedirectToAction("Create", "TimeCardDetails");
             }
 
             ViewBag.SiteID = new SelectList(db.SiteLocations, "SiteID", "LocationName", timeCard.SiteID);
@@ -124,9 +173,18 @@ namespace DisasterRecovery.Controllers
         {
             TimeCard timeCard = db.TimeCards.Find(id);
             db.TimeCards.Remove(timeCard);
+
+            var tDetails = db.TimeCardDetails.Where(v => v.IdTimeCard == id);
+
+            if (tDetails != null)
+            {
+                db.TimeCardDetails.RemoveRange(tDetails);
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
 
         protected override void Dispose(bool disposing)
         {

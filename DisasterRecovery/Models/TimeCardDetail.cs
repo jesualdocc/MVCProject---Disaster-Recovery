@@ -17,7 +17,8 @@ namespace DisasterRecovery.Models
         public int IdTimeCard { get; set; }
         public int IdJobList { get; set; }
         public Nullable<int> Hours { get; set; }
-        public Nullable<decimal> Amount { get; set; }
+        public Nullable<double> Amount { get; set; }
+        public int IdTimeCardDetails { get; set; }
     
         public virtual JobList JobList { get; set; }
         public virtual TimeCard TimeCard { get; set; }

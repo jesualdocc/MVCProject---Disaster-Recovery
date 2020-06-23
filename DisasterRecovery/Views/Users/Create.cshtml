@@ -81,7 +81,7 @@
             <div class="form-group">
                 <label class="control-label" for="IdSubContractor">Sub Contractor:</label>
                 <div class="col-md-10">
-                    @Html.DropDownList("IdSubContractor", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownList("IdSubContractor", null,"Select Contractor", htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.IdSubContractor, "", new { @class = "text-danger" })
                 </div>
             </div>

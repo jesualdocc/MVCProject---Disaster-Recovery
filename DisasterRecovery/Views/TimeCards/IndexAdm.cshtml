@@ -9,10 +9,6 @@
     </center>
 
 
-<p>
-    @Html.ActionLink("Enter New Timesheet", "Create")
-</p>
-
 <center>
     <p>
         Submission History
@@ -40,6 +36,10 @@
             Submission Status
         </th>
 
+        <th>
+            Submitted by
+        </th>
+
         <th></th>
     </tr>
 
@@ -64,19 +64,15 @@
         @Html.DisplayFor(modelItem => item.TimeStatus)
     </td>
 
-    @if (item.TimeStatus == "Under Review" || item.TimeStatus == "Finalized")
-    {
-        <td>@Html.ActionLink("Details", "Details", new { id = item.IdTimeCard }) |</td>
+    <td>
+        @Html.DisplayFor(modelItem => item.User.FirstName)
+    </td>
 
-    }
-    else
-    {
-        <td>
-            @Html.ActionLink("Add/Edit Details", "Edit", new { id = item.IdTimeCard }) |
-            @Html.ActionLink("Details", "Details", new { id = item.IdTimeCard })|
-            @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCard })
-        </td>
-    }
+    <td>
+        @Html.ActionLink("Review", "ReviewSubmission", new { id = item.IdTimeCard })|
+        @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCard })
+    </td>
+
 </tr>
 }
 

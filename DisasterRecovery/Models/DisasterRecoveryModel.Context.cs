@@ -28,7 +28,6 @@ namespace DisasterRecovery.Models
         public virtual DbSet<JobList> JobLists { get; set; }
         public virtual DbSet<SiteLocation> SiteLocations { get; set; }
         public virtual DbSet<SubContractor> SubContractors { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TimeCard> TimeCards { get; set; }
         public virtual DbSet<TimeCardDetail> TimeCardDetails { get; set; }
         public virtual DbSet<User> Users { get; set; }
