@@ -16,7 +16,6 @@ namespace DisasterRecovery.Controllers
         private DisasterRecoveryEntities db = new DisasterRecoveryEntities();
 
         // GET: JobLists
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             return View(db.JobLists.ToList());
