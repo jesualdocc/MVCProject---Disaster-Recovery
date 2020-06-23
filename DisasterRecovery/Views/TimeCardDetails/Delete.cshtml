@@ -2,6 +2,10 @@
 
 @{
     ViewBag.Title = "Delete";
+     if (Session["LogedUserRole"] == "Contractor")
+    {
+        Layout = "~/Views/Shared/_LayoutContractor.cshtml";
+    }
 }
 
 <h2>Delete</h2>

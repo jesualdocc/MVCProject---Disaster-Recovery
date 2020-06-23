@@ -2,73 +2,123 @@
 
 @{
     ViewBag.Title = "Details";
+
+     if (Session["LogedUserRole"] == "Contractor")
+    {
+        Layout = "~/Views/Shared/_LayoutContractor.cshtml";
+    }
 }
-
-<h2>Details</h2>
-
+<center>
+    <h2>Submission Details</h2>
+</center>
 <div>
-    <h4>TimeCard</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalHours)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.TotalHours)
-        </dd>
+    <h4>Jobs Performed</h4>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </dt>
+    <table class="table">
+        <tr>
+            <th>
+                Hours
+            </th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Job
+            </th>
 
-        <dd>
-            @Html.DisplayFor(model => model.TotalAmount)
-        </dd>
+        </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeStatus)
-        </dt>
+        @foreach (var item in Model.TimeCardDetails)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobList.JobName)
+                </td>
 
-        <dd>
-            @Html.DisplayFor(model => model.TimeStatus)
-        </dd>
+            </tr>
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.RegDate)
-        </dt>
+    </table>
 
-        <dd>
-            @Html.DisplayFor(model => model.RegDate)
-        </dd>
+    <h4>Summary</h4>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SiteLocation.LocationName)
-        </dt>
+    <table class="table">
+        <tr>
+            <th>
+                Total Hours
+            </th>
 
-        <dd>
-            @Html.DisplayFor(model => model.SiteLocation.LocationName)
-        </dd>
+            <th>
+                Total Amount
+            </th>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SubContractor.SubContractorName)
-        </dt>
+            <th>
+                Submission Status
+            </th>
 
-        <dd>
-            @Html.DisplayFor(model => model.SubContractor.SubContractorName)
-        </dd>
+            <th>
+                Location
+            </th>
+            <th>
+                Contractor Name
+            </th>
+            <th>
+                Submitted By
+            </th>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.User.UserName)
-        </dt>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.TotalHours)
+            </td>
 
-        <dd>
-            @Html.DisplayFor(model => model.User.UserName)
-        </dd>
+            <td>
+                @Html.DisplayFor(model => model.TotalAmount)
+            </td>
 
-    </dl>
-</div>
+            <td>
+                @Html.DisplayFor(model => model.TimeStatus)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.RegDate)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.SubContractor.SubContractorName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.User.UserName)
+            </td>
+
+        </tr>
+
+    </table>
+
+
+    @if (Model.TimeStatus == "Approved")
+    {
+        <p>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+
+    }
+    else
+    {
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.IdTimeCard }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+        
+    }
+
+    

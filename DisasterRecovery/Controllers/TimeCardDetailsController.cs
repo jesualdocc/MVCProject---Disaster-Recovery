@@ -27,7 +27,7 @@ namespace DisasterRecovery.Controllers
           
             var timeCardDetails = db.TimeCardDetails.Include(t => t.JobList).Include(t => t.TimeCard);
             
-            if(timeCardID != null)
+            if (timeCardID != null)
             {
                 timeCardDetails = timeCardDetails.Where(t => t.IdTimeCard == timeCardID);
             }

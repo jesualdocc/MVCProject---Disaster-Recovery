@@ -8,16 +8,21 @@ using System.Web;
 using System.Web.Mvc;
 using DisasterRecovery.Models;
 
+
 namespace DisasterRecovery.Controllers
 {
     public class TimeCardsController : Controller
     {
         private DisasterRecoveryEntities db = new DisasterRecoveryEntities();
+        private static int userID;
 
         // GET: TimeCards
         public ActionResult Index()
         {
-            var timeCards = db.TimeCards.Include(t => t.SiteLocation).Include(t => t.SubContractor).Include(t => t.User);
+         
+        var timeCards = db.TimeCards.Include(t => t.SiteLocation).Include(t => t.SubContractor).Include(t => t.User);
+            userID = Convert.ToInt32(Session["LogedUserID"]);
+            timeCards = timeCards.Where(u => u.IdUser == userID);
             return View(timeCards.ToList());
         }
 
@@ -25,6 +30,11 @@ namespace DisasterRecovery.Controllers
         {
             var timeCards = db.TimeCards.Include(t => t.SiteLocation).Include(t => t.SubContractor).Include(t => t.User);
             return View(timeCards.ToList());
+        }
+
+        public ActionResult GoToEditDetailsTC()
+        {
+            return RedirectToAction("Edit", "TimeCardDetails");
         }
 
         public ActionResult Approve(int? id)
@@ -39,14 +49,35 @@ namespace DisasterRecovery.Controllers
                 return HttpNotFound();
             }
             
-            timeCard.TimeStatus = "Finalized";
+            timeCard.TimeStatus = "Approved";
             db.Entry(timeCard).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("IndexAdm");
         }
+
+        public ActionResult Reject(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TimeCard timeCard = db.TimeCards.Find(id);
+            if (timeCard == null)
+            {
+                return HttpNotFound();
+            }
+
+            timeCard.TimeStatus = "Rejected";
+            db.Entry(timeCard).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("IndexAdm");
+        }
+
         // GET: TimeCards/ReviewSubmission/5
+      
         public ActionResult ReviewSubmission(int? id)
         {
+           
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -97,8 +128,8 @@ namespace DisasterRecovery.Controllers
                 timeCard.RegDate = DateTime.Now;
                 timeCard.TimeStatus = "Open";
 
-
-                timeCard.IdUser = Convert.ToInt32(Session["LogedUserID"]);
+                userID = Convert.ToInt32(Session["LogedUserID"]);
+                timeCard.IdUser = userID;
 
                 db.TimeCards.Add(timeCard);
                 db.SaveChanges();
@@ -137,12 +168,15 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdTimeCard,SiteID,IdSubContractor,TotalHours,TotalAmount,TimeStatus,RegDate,IdUser")] TimeCard timeCard)
+        public ActionResult Edit([Bind(Include = "IdTimeCard,SiteID,IdSubContractor,TotalHours,TotalAmount,TimeStatus,RegDate")] TimeCard timeCard)
         {
             if (ModelState.IsValid)
             {
+                timeCard.IdUser = userID;
+
                 db.Entry(timeCard).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             ViewBag.SiteID = new SelectList(db.SiteLocations, "SiteID", "LocationName", timeCard.SiteID);

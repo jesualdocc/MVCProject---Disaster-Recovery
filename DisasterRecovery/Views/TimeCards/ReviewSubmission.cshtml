@@ -102,8 +102,8 @@
 
 
         <p>
-            @Html.ActionLink("Approve", "Approve", new { id = Model.IdTimeCard })
-            
+            @Html.ActionLink("Approve", "Approve", new { id = Model.IdTimeCard })|
+            @Html.ActionLink("Reject", "Reject", new { id = Model.IdTimeCard })|
             @Html.ActionLink("Edit", "Edit", new { id = Model.IdTimeCard }) |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "IndexAdm")
         </p>
