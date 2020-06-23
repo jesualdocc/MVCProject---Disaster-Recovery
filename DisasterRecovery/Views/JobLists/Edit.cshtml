@@ -60,8 +60,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.LaborStatus, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LaborStatus, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LaborStatus, "", new { @class = "text-danger" })
+                @*@Html.EditorFor(model => model.LaborStatus, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LaborStatus, "", new { @class = "text-danger" })*@
+
+                @Html.DropDownListFor(model => model.LaborStatus,
+                  new List<SelectListItem> {
+                       new SelectListItem { Value = "0" , Text = "Active" },
+                       new SelectListItem { Value = "1" , Text = "Inactive" }
+                    },
+                  new { @class = "myselect" })
+
             </div>
         </div>
 

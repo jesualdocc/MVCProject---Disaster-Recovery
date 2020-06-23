@@ -48,7 +48,16 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LaborStatus)
+            
+            @if (@Html.DisplayFor(model => model.LaborStatus).ToString() == "1")
+            {
+                <p>Inactive</p>
+            }
+            else
+            {
+                <p>Active</p>
+            }
+
         </dd>
 
         <dt>

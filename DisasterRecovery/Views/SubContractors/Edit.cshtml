@@ -52,8 +52,17 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SubContractorStatus, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SubContractorStatus, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SubContractorStatus, "", new { @class = "text-danger" })
+                @*@Html.EditorFor(model => model.SubContractorStatus, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SubContractorStatus, "", new { @class = "text-danger" })*@
+
+
+                @Html.DropDownListFor(model => model.SubContractorStatus,
+                                  new List<SelectListItem> {
+                                       new SelectListItem { Value = "0" , Text = "Active" },
+                                       new SelectListItem { Value = "1" , Text = "Inactive" }
+                                    },
+                                  new { @class = "myselect" })
+
             </div>
         </div>
 
