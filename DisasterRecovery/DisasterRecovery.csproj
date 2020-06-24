@@ -146,6 +146,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\CustomAuthenticationFilter.cs" />
+    <Compile Include="Infrastructure\CustomAuthorizeAttribute.cs" />
     <Compile Include="Models\DisasterRecoveryModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -268,7 +270,6 @@
     <Content Include="Content\tables.css" />
     <Content Include="Content\variables.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Models\DisasterRecoveryModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -323,6 +324,7 @@
     </Content>
     <Content Include="Views\TimeCards\IndexAdm.cshtml" />
     <Content Include="Views\TimeCards\ReviewSubmission.cshtml" />
+    <Content Include="Views\Users\UnAuthorized.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -371,10 +373,6 @@
     <Folder Include="obj\Release\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

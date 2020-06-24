@@ -6,15 +6,18 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DisasterRecovery.Infrastructure;
 using DisasterRecovery.Models;
 
 namespace DisasterRecovery.Controllers
 {
+   // [CustomAuthenticationFilter]
     public class UsersController : Controller
     {
         private DisasterRecoveryEntities db = new DisasterRecoveryEntities();
 
         // GET: Users
+        [CustomAuthorize("Admin")]
         public ActionResult Index()
         {
             var users = db.Users.Include(u => u.SubContractor);
@@ -22,6 +25,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: Users/Details/5
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +41,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: Users/Create
+        [CustomAuthorize("Admin")]
         public ActionResult Create()
         {
             ViewBag.IdSubContractor = new SelectList(db.SubContractors, "IdSubContractor", "SubContractorName");
@@ -48,6 +53,7 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize("Admin")]
         public ActionResult Create([Bind(Include = "IdUser,UserName,FirstName,LastName,Email,UserPassWord,UserStatus,IsAdm,IdSubContractor")] User user)
         {
             if (ModelState.IsValid)
@@ -63,6 +69,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: Users/Edit/5
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -83,6 +90,7 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize("Admin","Contractor")]
         public ActionResult Edit([Bind(Include = "IdUser,UserName,FirstName,LastName,Email,UserPassWord,UserStatus,IsAdm,IdSubContractor")] User user)
         {
             if (ModelState.IsValid)
@@ -97,6 +105,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: Users/Delete/5
+        [CustomAuthorize("Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -114,12 +123,18 @@ namespace DisasterRecovery.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize("Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             User user = db.Users.Find(id);
             db.Users.Remove(user);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult UnAuthorized()
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)

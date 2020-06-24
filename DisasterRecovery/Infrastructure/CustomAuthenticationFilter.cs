@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Filters;
 using System.Web.Routing;
@@ -25,8 +22,8 @@ namespace DisasterRecovery.Infrastructure
                 filterContext.Result = new RedirectToRouteResult(
                 new RouteValueDictionary
                 {
-                     { "controller", "Login" },
-                     { "Index", "Login" }
+                      { "controller", "Login" },
+                    { "action", "Index" }
                 });
             }
         }

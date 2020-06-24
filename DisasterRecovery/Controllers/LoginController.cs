@@ -11,13 +11,17 @@ using Microsoft.Ajax.Utilities;
 using System.Security.Cryptography;
 using System.Text;
 using System.IO;
+using System.Web.Security;
+using DisasterRecovery.Infrastructure;
 
 namespace DisasterRecovery.Controllers
 {
+    
     public class LoginController : Controller
     {
         private DisasterRecoveryEntities db = new DisasterRecoveryEntities();
 
+        
         // GET: Login
         public ActionResult Index()
         {
@@ -43,7 +47,7 @@ namespace DisasterRecovery.Controllers
                 {
                     Session["LogedUserID"] = myUser.IdUser.ToString();
                     Session["LogedUserName"] = myUser.FirstName + " " + myUser.LastName;
-
+                    
                     if (myUser.IsAdm == 1)
                     {
                         Session["LogedUserRole"] = "Admin";
@@ -104,7 +108,7 @@ namespace DisasterRecovery.Controllers
             Session["LogedUserID"] = null;
             Session["LogedUserName"] = null;
             Session["LogedUserRole"] = null;
-            ViewBag.Message = "Logged Out successfully!";
+            Session["feedback"] = "Logged Out successfully!";
             return RedirectToAction("Index", "Login");
         }
 

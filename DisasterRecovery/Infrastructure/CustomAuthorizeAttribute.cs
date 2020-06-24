@@ -17,17 +17,15 @@ namespace DisasterRecovery.Infrastructure
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             bool authorize = false;
-            var userId = Convert.ToString(httpContext.Session["LogeUserID"]);
+            var userId = Convert.ToString(httpContext.Session["LogedUserID"]);
             if (!string.IsNullOrEmpty(userId))
-                using (var context = new DisasterRecoveryEntities())
                 {
-                    var userRole = httpContext.Session["LogeUserRole"];
+                    var userRole = httpContext.Session["LogedUserRole"];
+                    foreach (var role in allowedroles)
                     {
-                        return true;
+                        if (role == userRole.ToString()) return true;
                     }
                 }
-
-
             return authorize;
         }
 
@@ -36,7 +34,7 @@ namespace DisasterRecovery.Infrastructure
             filterContext.Result = new RedirectToRouteResult(
                new RouteValueDictionary
                {
-                    { "controller", "Home" },
+                    { "controller", "Users" },
                     { "action", "UnAuthorized" }
                });
         }

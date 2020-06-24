@@ -10,27 +10,29 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<table class="table" id=" "SubContractorTable">
-    <tr>
-        <th>
-            @*@Html.DisplayNameFor(model => model.SubContractorName)*@
-            Contractor Name
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.ContractorAddress)*@
-            Contractor Address
-        </th>
-        <th>
-            Email
-        </th>
-        <th>
-            Phone
-        </th>
-        <th>
-            Contractor Status
-        </th>
-        <th></th>
-    </tr>
+<table class="table" id="SubContractorTable">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.SubContractorName)*@
+                Contractor Name
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.ContractorAddress)*@
+                Contractor Address
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Phone
+            </th>
+            <th>
+                Contractor Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
     @foreach (var item in Model)
     {

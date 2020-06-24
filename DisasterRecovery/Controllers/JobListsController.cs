@@ -6,11 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DisasterRecovery.Infrastructure;
 using DisasterRecovery.Models;
 
 
 namespace DisasterRecovery.Controllers
 {
+    [CustomAuthorize("Admin")]
     public class JobListsController : Controller
     {
         private DisasterRecoveryEntities db = new DisasterRecoveryEntities();
