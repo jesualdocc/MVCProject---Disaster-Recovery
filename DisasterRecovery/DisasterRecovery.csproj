@@ -326,6 +326,7 @@
     <Content Include="Views\TimeCards\ReviewSubmission.cshtml" />
     <Content Include="Views\Users\UnAuthorized.cshtml" />
     <Content Include="Views\Users\RecoverAccount.cshtml" />
+    <Content Include="Views\TimeCardDetails\IndexEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

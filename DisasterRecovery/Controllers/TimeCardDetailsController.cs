@@ -18,6 +18,8 @@ namespace DisasterRecovery.Controllers
         // GET: TimeCardDetails
         public ActionResult Index()
         {
+            timeCardID = Convert.ToInt32(Session["TimeCardID"]);
+
             var laborPerformed = db.TimeCardDetails.Where(v => v.IdTimeCard == timeCardID);
             var totalHours = laborPerformed.Sum(a => a.Hours);
             var totalAmount = laborPerformed.Sum(l => l.Amount);
@@ -27,6 +29,27 @@ namespace DisasterRecovery.Controllers
           
             var timeCardDetails = db.TimeCardDetails.Include(t => t.JobList).Include(t => t.TimeCard);
             
+            if (timeCardID != null)
+            {
+                timeCardDetails = timeCardDetails.Where(t => t.IdTimeCard == timeCardID);
+            }
+
+            return View(timeCardDetails.ToList());
+        }
+
+        public ActionResult IndexEdit()
+        {
+            timeCardID = Convert.ToInt32(Session["TimeCardID"]);
+
+            var laborPerformed = db.TimeCardDetails.Where(v => v.IdTimeCard == timeCardID);
+            var totalHours = laborPerformed.Sum(a => a.Hours);
+            var totalAmount = laborPerformed.Sum(l => l.Amount);
+
+            ViewBag.TotalHours = totalHours;
+            ViewBag.TotalAmount = totalAmount;
+
+            var timeCardDetails = db.TimeCardDetails.Include(t => t.JobList).Include(t => t.TimeCard);
+
             if (timeCardID != null)
             {
                 timeCardDetails = timeCardDetails.Where(t => t.IdTimeCard == timeCardID);
@@ -53,10 +76,45 @@ namespace DisasterRecovery.Controllers
 
         public ActionResult Cancel()
         {
-            var recordsToRemove = db.TimeCardDetails.Find(timeCardID);
-            db.TimeCardDetails.Remove(recordsToRemove);
+
+            if (timeCardID != null)
+            {
+                var recordTCD = db.TimeCardDetails.Where(t => t.IdTimeCard == timeCardID);
+                db.TimeCardDetails.RemoveRange(recordTCD);
+
+                var recordTC = db.TimeCards.Find(timeCardID);
+                db.TimeCards.Remove(recordTC);
+
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Index", "TimeCards");
         }
+
+        public ActionResult CancelNoDelete()
+        {
+            return RedirectToAction("Index", "TimeCards");
+        }
+
+
+        public ActionResult FinishLater()
+        {
+            if (timeCardID != null)
+            {
+                var laborPerformed = db.TimeCardDetails.Where(v => v.IdTimeCard == timeCardID);
+                var totalHours = laborPerformed.Sum(l => l.Hours);
+                var totalAmount = laborPerformed.Sum(l => l.Amount);
+
+                db.TimeCards.Find(timeCardID).TotalHours = totalHours;
+                db.TimeCards.Find(timeCardID).TotalAmount = totalAmount;
+                db.TimeCards.Find(timeCardID).TimeStatus = "Incomplete";
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "TimeCards");
+        }
+
+
 
 
             // GET: TimeCardDetails/Details/5
@@ -77,7 +135,8 @@ namespace DisasterRecovery.Controllers
         // GET: TimeCardDetails/Create
         public ActionResult Create()
         {
-            ViewBag.IdJobList = new SelectList(db.JobLists, "IdJobList", "JobName");
+            //Active Job = 1, Inactive = 0
+            ViewBag.IdJobList = new SelectList(db.JobLists.Where(s => s.LaborStatus == 1), "IdJobList", "JobName");
             ViewBag.IdTimeCard = new SelectList(db.TimeCards, "IdTimeCard", "IdTimeCard");
             return View();
         }
@@ -89,8 +148,7 @@ namespace DisasterRecovery.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdJobList,Hours,Amount")] TimeCardDetail timeCardDetail)
         {
-            timeCardID = (int)TempData["TimeCardID"];
-
+            
             if (ModelState.IsValid)
             {
                 
@@ -106,7 +164,7 @@ namespace DisasterRecovery.Controllers
             }
 
 
-            ViewBag.IdJobList = new SelectList(db.JobLists, "IdJobList", "JobName", timeCardDetail.IdJobList);
+            ViewBag.IdJobList = new SelectList(db.JobLists.Where(s => s.LaborStatus == 1), "IdJobList", "JobName", timeCardDetail.IdJobList);
             ViewBag.IdTimeCard = new SelectList(db.TimeCards, "IdTimeCard", "TimeStatus", timeCardDetail.IdTimeCard);
             return View(timeCardDetail);
         }
@@ -123,7 +181,7 @@ namespace DisasterRecovery.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdJobList = new SelectList(db.JobLists, "IdJobList", "JobName", timeCardDetail.IdJobList);
+            ViewBag.IdJobList = new SelectList(db.JobLists.Where(s => s.LaborStatus == 1), "IdJobList", "JobName", timeCardDetail.IdJobList);
             ViewBag.IdTimeCard = new SelectList(db.TimeCards, "IdTimeCard", "TimeStatus", timeCardDetail.IdTimeCard);
             return View(timeCardDetail);
         }
@@ -133,15 +191,18 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdTimeCard,IdJobList,Hours,Amount")] TimeCardDetail timeCardDetail)
+        public ActionResult Edit([Bind(Include = "IdTimeCard, IdJobList,Hours, IdTimeCardDetails")] TimeCardDetail timeCardDetail)
         {
             if (ModelState.IsValid)
             {
+                var rate = db.JobLists.Find(timeCardDetail.IdJobList).Rate;
+                timeCardDetail.Amount = Convert.ToDouble(timeCardDetail.Hours * rate);
+
                 db.Entry(timeCardDetail).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdJobList = new SelectList(db.JobLists, "IdJobList", "JobName", timeCardDetail.IdJobList);
+            ViewBag.IdJobList = new SelectList(db.JobLists.Where(s => s.LaborStatus == 1), "IdJobList", "JobName", timeCardDetail.IdJobList);
             ViewBag.IdTimeCard = new SelectList(db.TimeCards, "IdTimeCard", "TimeStatus", timeCardDetail.IdTimeCard);
             return View(timeCardDetail);
         }

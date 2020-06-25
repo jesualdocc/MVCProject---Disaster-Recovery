@@ -65,15 +65,16 @@
             </th>
 
             <th>
+                Date Submitted
+            </th>
+
+            <th>
                 Location
             </th>
             <th>
                 Contractor Name
             </th>
-            <th>
-                Submitted By
-            </th>
-
+            
         </tr>
         <tr>
             <td>
@@ -93,11 +94,11 @@
             </td>
 
             <td>
-                @Html.DisplayFor(model => model.SubContractor.SubContractorName)
+                @Html.DisplayFor(model => model.SiteLocation.LocationName)
             </td>
 
             <td>
-                @Html.DisplayFor(model => model.User.UserName)
+                @Html.DisplayFor(model => model.SubContractor.SubContractorName)
             </td>
 
         </tr>

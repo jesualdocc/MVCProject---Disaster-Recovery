@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using DisasterRecovery.Models;
 
 
@@ -21,20 +22,22 @@ namespace DisasterRecovery.Controllers
         {
          
         var timeCards = db.TimeCards.Include(t => t.SiteLocation).Include(t => t.SubContractor).Include(t => t.User);
+
             userID = Convert.ToInt32(Session["LogedUserID"]);
             timeCards = timeCards.Where(u => u.IdUser == userID);
+            timeCards = timeCards.OrderByDescending(d => d.RegDate);
+
+
             return View(timeCards.ToList());
         }
 
         public ActionResult IndexAdm()
         {
             var timeCards = db.TimeCards.Include(t => t.SiteLocation).Include(t => t.SubContractor).Include(t => t.User);
-            return View(timeCards.ToList());
-        }
+            timeCards = timeCards.OrderByDescending(d => d.RegDate);
+            timeCards = timeCards.Where(t => t.TimeStatus != "Incomplete");
 
-        public ActionResult GoToEditDetailsTC()
-        {
-            return RedirectToAction("Edit", "TimeCardDetails");
+            return View(timeCards.ToList());
         }
 
         public ActionResult Approve(int? id)
@@ -120,7 +123,7 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdTimeCard,SiteID,IdSubContractor")] TimeCard timeCard)
+        public ActionResult Create([Bind(Include = "IdTimeCard,SiteID")] TimeCard timeCard)
         {
            
             if (ModelState.IsValid)
@@ -131,12 +134,21 @@ namespace DisasterRecovery.Controllers
                 userID = Convert.ToInt32(Session["LogedUserID"]);
                 timeCard.IdUser = userID;
 
+                var contractorID = db.Users.Find(userID).IdSubContractor;
+
+                if(contractorID == null)
+                {
+                    return RedirectToAction("Index", "TimeCardDetails");
+                }
+
+                timeCard.IdSubContractor = Convert.ToInt32(contractorID);
+
                 db.TimeCards.Add(timeCard);
                 db.SaveChanges();
 
-                TempData["TimeCardID"] = timeCard.IdTimeCard;
+                Session["TimeCardID"] = timeCard.IdTimeCard;
                
-                return RedirectToAction("Create", "TimeCardDetails");
+                return RedirectToAction("Index", "TimeCardDetails");
             }
 
             ViewBag.SiteID = new SelectList(db.SiteLocations, "SiteID", "LocationName", timeCard.SiteID);
@@ -153,6 +165,7 @@ namespace DisasterRecovery.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             TimeCard timeCard = db.TimeCards.Find(id);
+
             if (timeCard == null)
             {
                 return HttpNotFound();
@@ -173,11 +186,23 @@ namespace DisasterRecovery.Controllers
             if (ModelState.IsValid)
             {
                 timeCard.IdUser = userID;
+                timeCard.RegDate = DateTime.Now;
+               
+                var contractorID = db.Users.Find(userID).IdSubContractor;
+
+                if (contractorID == null)
+                {
+                    return RedirectToAction("Index", "TimeCardDetails");
+                }
+
+                timeCard.IdSubContractor = Convert.ToInt32(contractorID);
 
                 db.Entry(timeCard).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Index");
+                Session["TimeCardID"] = timeCard.IdTimeCard;
+
+                return RedirectToAction("IndexEdit", "TimeCardDetails");
             }
             ViewBag.SiteID = new SelectList(db.SiteLocations, "SiteID", "LocationName", timeCard.SiteID);
             ViewBag.IdSubContractor = new SelectList(db.SubContractors, "IdSubContractor", "SubContractorName", timeCard.IdSubContractor);
@@ -198,6 +223,10 @@ namespace DisasterRecovery.Controllers
                 return HttpNotFound();
             }
             return View(timeCard);
+           
+            
+           // return RedirectToAction("Delete", new RouteValueDictionary( new { controller = "TimeCards", action = "Delete", Id = id }));
+       
         }
 
         // POST: TimeCards/Delete/5

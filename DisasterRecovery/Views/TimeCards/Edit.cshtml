@@ -18,36 +18,31 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>Add/Edit Details</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.IdTimeCard)
+<div class="form-horizontal">
+    <h4>Add/Edit Details</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.IdTimeCard)
+    @Html.HiddenFor(model => model.TotalAmount)
+    @Html.HiddenFor(model => model.TotalHours)
+    @Html.HiddenFor(model => model.IdSubContractor)
+    @Html.HiddenFor(model => model.TimeStatus)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.SiteID,"Location", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.SiteID, "Location", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("SiteID", null, htmlAttributes: new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.SiteID, "", new { @class = "text-danger" })
         </div>
     </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IdSubContractor, "Contractor", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IdSubContractor", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IdSubContractor, "", new { @class = "text-danger" })
-
-            </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
         </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                </div>
-            </div>
-        
     </div>
+
+</div>
         }
 
         <div>

@@ -77,10 +77,10 @@
     else
     {
 <td>
-    @Html.ActionLink("Edit Main", "Edit", new { id = item.IdTimeCard }) |
-    @Html.ActionLink("Edit Detail", "GoToEditDetailsTC", new { id = item.IdTimeCard }) |
-    @Html.ActionLink("Details", "Details", new { id = item.IdTimeCard })|
+    @Html.ActionLink("Edit", "Edit", new { id = item.IdTimeCard }) |
+    @Html.ActionLink("Details", "Details", new { id = item.IdTimeCard }) |
     @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCard })
+  
 </td>
     }
 </tr>
