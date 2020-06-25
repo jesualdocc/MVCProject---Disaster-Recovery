@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using DisasterRecovery.Infrastructure;
@@ -44,7 +45,7 @@ namespace DisasterRecovery.Controllers
         [CustomAuthorize("Admin")]
         public ActionResult Create()
         {
-            ViewBag.IdSubContractor = new SelectList(db.SubContractors, "IdSubContractor", "SubContractorName");
+            ViewBag.IdSubContractor = new SelectList(db.SubContractors.Where(s => s.SubContractorStatus == 1), "IdSubContractor", "SubContractorName");
             return View();
         }
 
@@ -134,6 +135,49 @@ namespace DisasterRecovery.Controllers
 
         public ActionResult UnAuthorized()
         {
+            return View();
+        }
+
+        public ActionResult RecoverAccount()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult RecoverAccount(string receiver, string message)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var senderEmail = new MailAddress("jamilmoughal786@gmail.com", "Jamil");
+                    var receiverEmail = new MailAddress(receiver, "Receiver");
+                    var password = "Your Email Password here";
+                    var sub = "Recover Your Password";
+                    var body = "Use this Link to Recover your Password" ;
+                    var smtp = new SmtpClient
+                    {
+                        Host = "smtp.gmail.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(senderEmail.Address, password)
+                    };
+                    using (var mess = new MailMessage(senderEmail, receiverEmail)
+                    {
+                        Subject = sub,
+                        Body = body
+                    })
+                    {
+                        smtp.Send(mess);
+                    }
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "Some Error";
+            }
             return View();
         }
 

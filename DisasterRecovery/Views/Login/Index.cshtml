@@ -6,18 +6,18 @@
 
 
 <h2 class="text-center">User Login</h2>
- 
-@if(ViewBag.Message != null)
+
+@if (ViewBag.Message != null)
 {
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    @ViewBag.Message
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @ViewBag.Message
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 }
-    
-    
+
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -31,22 +31,28 @@
     <div class="col-md-12">
         <div class="form-group">
             <label for="Password">Password</label>
-            @Html.EditorFor(model => model.UserPassWord, new { htmlAttributes = new { @class = "form-control", @type = "password" }})
+            @Html.EditorFor(model => model.UserPassWord, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
             @Html.ValidationMessageFor(model => model.UserPassWord, "", new { @class = "text-danger", @required = "required" })
         </div>
     </div>@*
-    <div class="col-md-offset-2 col-md-10 hideRow">
-        <div class="form-group">
-            <div class="checkbox">
-                <input id="remember" name="remember" type="checkbox" />
-                <input name="remember" type="hidden" value="false" />
-                <label for="remember">Remember me?</label>
+        <div class="col-md-offset-2 col-md-10 hideRow">
+            <div class="form-group">
+                <div class="checkbox">
+                    <input id="remember" name="remember" type="checkbox" />
+                    <input name="remember" type="hidden" value="false" />
+                    <label for="remember">Remember me?</label>
+                </div>
             </div>
-        </div>
-    </div>*@
+        </div>*@
+
     <div class="form-group">
         <div class=" col-md-12">
             <input type="submit" value="Login" class="btn btn-blue btn-block" id="btn-login" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class=" col-md-12">
+            @Html.ActionLink("Remeber Password.", "RecoverAccount", "Users")
         </div>
     </div>
 }

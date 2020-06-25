@@ -31,7 +31,7 @@ namespace DisasterRecovery.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "UserName,UserPassWord")] User user, bool? remember)
+        public ActionResult Index([Bind(Include = "UserName,UserPassWord")] User user)
         {
 
             if (!String.IsNullOrEmpty(user.UserName))
@@ -42,7 +42,10 @@ namespace DisasterRecovery.Controllers
 
                 if (myUser == null) {
                 ViewBag.Message = "Incorrect username or password."; }
-
+                else if (myUser.UserStatus == "0")
+                {
+                    ViewBag.Message = "Sorry this user is not Active, Please Contact the Administrator.";
+                }
                 else
                 {
                     Session["LogedUserID"] = myUser.IdUser.ToString();
