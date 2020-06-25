@@ -1,0 +1,70 @@
+﻿@model DisasterRecovery.Models.User
+
+@{
+    ViewBag.Title = "Edit";
+    if (Session["LogedUserRole"] == "Contractor")
+    {
+        Layout = "~/Views/Shared/_LayoutContractor.cshtml";
+    }
+}
+
+<h2>Edit PassWord</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.IdUser)
+    @Html.HiddenFor(model => model.UserName)
+    @Html.HiddenFor(model => model.LastName)
+    @Html.HiddenFor(model => model.SubContractor)
+    @Html.HiddenFor(model => model.Email)
+    @Html.HiddenFor(model => model.FirstName)
+
+
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            <label class="control-label" for="lastpassword">Last PassWord:</label>
+            <div class="col-md-10">
+                <input type="password" id="LastPassword" class="form-control" required />
+                @Html.ValidationMessageFor(model => model.UserPassWord, "", new { @class = "text-danger", @Required = "require" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="NewPassword">New PassWord:</label>
+            <div class="col-md-10">
+                <input type="password" id="NewPassword" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="ComparePassword">Confirm PassWord:</label>
+                <div class="col-md-10">
+                    <input type="password" id="ComparePassword" class="form-control" required />
+                </div>
+            </div>
+        </div>
+        <div class="w-100"></div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+
+<div>
+    @if (Session["LogedUserRole"] == "Admin")
+    {
+        @Html.ActionLink("Back to List", "Index")
+
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
