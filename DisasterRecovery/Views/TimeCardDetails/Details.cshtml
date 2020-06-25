@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Details";
-     if (Session["LogedUserRole"] == "Contractor")
+    if (Session["LogedUserRole"] == "Contractor")
     {
         Layout = "~/Views/Shared/_LayoutContractor.cshtml";
     }
@@ -20,6 +20,13 @@
 
         <dd>
             @Html.DisplayFor(model => model.Hours)
+
+            @{ if (Model.Hours > Model.JobList.MaxHour)
+                {
+                    <Span style="color:red"> (Exceeded Max Hours)</Span>
+                    ViewBag.Alert = 1;
+                }
+            }
         </dd>
 
         <dt>
@@ -49,6 +56,17 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IdTimeCardDetails }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@{ if (ViewBag.Alert == 1)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Warning!</strong> Check some of those fields above, Time Card may be rejected.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+}

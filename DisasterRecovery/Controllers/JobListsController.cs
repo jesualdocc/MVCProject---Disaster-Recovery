@@ -54,7 +54,7 @@ namespace DisasterRecovery.Controllers
         {
             if (ModelState.IsValid)
             {
-                jobList.LaborStatus = 0;
+                jobList.LaborStatus = 1;
                 db.JobLists.Add(jobList);
                 db.SaveChanges();
                 return RedirectToAction("Index");

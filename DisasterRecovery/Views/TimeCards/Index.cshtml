@@ -24,66 +24,69 @@
     </p>
     <hr>
 </center>
-<table class="table">
-    <tr>
-        <th>
-            Site Code
-        </th>
-        <th>
-            Contractor Name
-        </th>
-        <th>
-            Total Hours
-        </th>
-        <th>
-            Total Amount
-        </th>
-        <th>
-            Submission Date
-        </th>
-        <th>
-            Submission Status
-        </th>
+<table class="table" id="TimecardIndex">
+    <thead>
+        <tr>
+            <th>
+                Site Code
+            </th>
+            <th>
+                Contractor Name
+            </th>
+            <th>
+                Total Hours
+            </th>
+            <th>
+                Total Amount
+            </th>
+            <th>
+                Submission Date
+            </th>
+            <th>
+                Submission Status
+            </th>
 
-        <th></th>
-    </tr>
+            <th></th>
+        </tr>
+        </thead>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.SiteLocation.SiteCode)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.TotalHours)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.TotalAmount)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.RegDate)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.TimeStatus)
-    </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteLocation.SiteCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubContractor.SubContractorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeStatus)
+                </td>
 
-    @if (item.TimeStatus == "Approved" || item.TimeStatus == "Under Review")
-    {
-        <td>@Html.ActionLink("Details", "Details", new { id = item.IdTimeCard }) </td>
+                @if (item.TimeStatus == "Approved" || item.TimeStatus == "Under Review")
+                {
+                    <td>@Html.ActionLink("Details", "Details", new { id = item.IdTimeCard }) </td>
 
-    }
-    else
-    {
-<td>
-    @Html.ActionLink("Edit", "Edit", new { id = item.IdTimeCard }) |
-    @Html.ActionLink("Details", "Details", new { id = item.IdTimeCard }) |
-    @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCard })
-  
-</td>
-    }
-</tr>
-}
+                }
+                else
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.IdTimeCard }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.IdTimeCard }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCard })
+
+                    </td>
+                }
+            </tr>
+        }
 
 </table>

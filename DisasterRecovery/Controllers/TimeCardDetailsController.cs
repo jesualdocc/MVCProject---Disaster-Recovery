@@ -68,6 +68,7 @@ namespace DisasterRecovery.Controllers
 
                 db.TimeCards.Find(timeCardID).TotalHours = totalHours;
                 db.TimeCards.Find(timeCardID).TotalAmount = totalAmount;
+                db.TimeCards.Find(timeCardID).TimeStatus = "Open";
                 db.SaveChanges();
             }
 

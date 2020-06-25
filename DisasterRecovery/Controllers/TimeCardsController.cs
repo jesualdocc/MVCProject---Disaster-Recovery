@@ -245,7 +245,10 @@ namespace DisasterRecovery.Controllers
             }
 
             db.SaveChanges();
-            return RedirectToAction("Index");
+            if(Session["LogedUserRole"] == "Admin")
+                return RedirectToAction("IndexAdm");
+            else
+                return RedirectToAction("Index");
         }
 
 
