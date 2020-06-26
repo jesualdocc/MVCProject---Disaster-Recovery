@@ -44,7 +44,6 @@ namespace DisasterRecovery.Controllers
                 string myPaswd = HashPaswd(user.UserPassWord);
                 User myUser = db.Users.FirstOrDefault
                 (u => u.UserName.Equals(user.UserName) && u.UserPassWord.Equals(myPaswd));
-                int id = myUser.IdUser;
                 
                 if (myUser == null) {
                 ViewBag.Message = "Incorrect username or password."; }
@@ -54,7 +53,8 @@ namespace DisasterRecovery.Controllers
                 }
                 else
                 {
-                          
+                    int id = myUser.IdUser;
+
                     Session["LogedUserID"] = myUser.IdUser.ToString();
                     Session["LogedUserName"] = myUser.FirstName + " " + myUser.LastName;
                     
