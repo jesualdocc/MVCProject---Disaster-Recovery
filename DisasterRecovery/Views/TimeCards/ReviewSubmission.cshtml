@@ -131,9 +131,7 @@
 
 @using (Html.BeginForm("ReviewDecision", "TimeCards", FormMethod.Post))
 {
-    <center>
-        <h4>Review Comments</h4>
-    </center>
+
     @Html.HiddenFor(model => model.IdTimeCard)
     @Html.HiddenFor(model => model.TotalAmount)
     @Html.HiddenFor(model => model.TotalHours)
@@ -142,12 +140,25 @@
     @Html.HiddenFor(model => model.SiteID)
     @Html.HiddenFor(model => model.IdUser)
 
-    @Html.TextAreaFor(model => model.Comment, new { @class = "form-control", @rows = 2, @placeholder = "Enter your comments for this submission here" })
-    <br />
-    <input type="submit" name="approve" value="Approve" />
-    <input type="submit" name="reject" value="Reject" />
-    <input type="submit" name="later" value="Finish Later" />
-    <input type="submit" name="cancel" value="Return to List" />
+
+    if (Model.TimeStatus == "Approved")
+    {
+
+        <input type="submit" name="cancel" value="Return to List" />
+    }
+    else
+    {
+        <center>
+            <h4>Review Comments</h4>
+        </center>
+        @Html.TextAreaFor(model => model.Comment, new { @class = "form-control", @rows = 2, @placeholder = "Enter your comments for this submission here" })
+        <br />
+        <input type="submit" name="approve" value="Approve" />
+        <input type="submit" name="reject" value="Reject" />
+        <input type="submit" name="later" value="Finish Later" />
+        <input type="submit" name="cancel" value="Return to List" />
+    }
+
 
 }
 
