@@ -28,6 +28,10 @@
                 Job
             </th>
 
+            <th>
+                Date Worked
+            </th>
+
         </tr>
 
         @foreach (var item in Model.TimeCardDetails)
@@ -48,6 +52,11 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.JobList.JobName)
+                </td>
+
+                <td>
+                    
+                    @Convert.ToString(string.Format("{0:dd/MM/yyyy}", item.TcDate))
                 </td>
 
             </tr>
@@ -112,8 +121,14 @@
 
     </table>
 
+    <center>
+        <h4>Review Comments</h4>
 
-    @if (Model.TimeStatus == "Approved")
+        @Html.TextAreaFor(model => model.Comment, new { @readonly = "readonly", @class = "form-control", @rows = 2})
+    </center>
+
+
+    @if (Model.TimeStatus == "Approved" || Model.TimeStatus == "Under Review")
     {
         <p>
             @Html.ActionLink("Back to List", "Index")

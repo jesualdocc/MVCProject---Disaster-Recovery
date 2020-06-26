@@ -35,6 +35,9 @@
             <th>
                 Job
             </th>
+            <th>
+                Date Worked
+            </th>
 
             <th></th>
         </tr>
@@ -42,30 +45,33 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td> </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Hours)
+<tr>
+    <td> </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Hours)
 
-                @{ if (item.Hours > item.JobList.MaxHour)
-                    {
-                        <Span style="color:red"> (Exceeded Max Hours)</Span>
-                        ViewBag.Alert = 1;
-                    }
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobList.JobName)
-            </td>
+        @{ if (item.Hours > item.JobList.MaxHour)
+            {
+                <Span style="color:red"> (Exceeded Max Hours)</Span>
+                ViewBag.Alert = 1;
+            }
+        }
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Amount)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.JobList.JobName)
+    </td>
+    <td>
+        @Convert.ToString(string.Format("{0:dd/MM/yyyy}", item.TcDate))
+    </td>
 
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.IdTimeCardDetails }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCardDetails })
-            </td>
-        </tr>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.IdTimeCardDetails }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.IdTimeCardDetails })
+    </td>
+</tr>
     }
     <tr>
         <th> Totals</th>

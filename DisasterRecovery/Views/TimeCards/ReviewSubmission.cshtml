@@ -4,131 +4,161 @@
     ViewBag.Title = "Review Submission";
 }
 
+<center>
+    <h2>Submission Details</h2>
+</center>
+
+<hr />
+
+<center>
+    <h4>Previous Comments</h4>
+
+    @Html.TextAreaFor(model => model.Comment, new { @readonly = "readonly", @class = "form-control", @rows = 2 })
+</center>
+
+<h4>Jobs Performed</h4>
+
+<table class="table" id="TimecardSubmi">
+    <thead>
+        <tr>
+            <th>
+                Hours
+            </th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Job
+            </th>
+            <th>
+                Date Worked
+            </th>
+
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.TimeCardDetails)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hours)
+
+                @{ if (item.Hours > item.JobList.MaxHour)
+                    {
+                        <Span style="color:red"> (Exceeded Max Hours)</Span>
+                        ViewBag.Alert = 1;
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobList.JobName)
+            </td>
+
+            <td>
+                @Convert.ToString(string.Format("{0:dd/MM/yyyy}", item.TcDate))
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+<h4>Summary</h4>
+
+<table class="table">
+    <tr>
+        <th>
+            Total Hours
+        </th>
+
+        <th>
+            Total Amount
+        </th>
+
+        <th>
+            Submission Status
+        </th>
+
+        <th>
+            Location
+        </th>
+        <th>
+            Contractor Name
+        </th>
+        <th>
+            Submitted By
+        </th>
+        <th>
+            Submission Date
+        </th>
+
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.TotalHours)
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.TotalAmount)
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.TimeStatus)
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.SiteLocation.SiteCode)
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.SubContractor.SubContractorName)
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.User.UserName)
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.RegDate)
+        </td>
+    </tr>
+
+</table>
+
+
+@using (Html.BeginForm("ReviewDecision", "TimeCards", FormMethod.Post))
+{
     <center>
-        <h2>Submission Details</h2>
+        <h4>Review Comments</h4>
     </center>
-    
-        <hr />
+    @Html.HiddenFor(model => model.IdTimeCard)
+    @Html.HiddenFor(model => model.TotalAmount)
+    @Html.HiddenFor(model => model.TotalHours)
+    @Html.HiddenFor(model => model.IdSubContractor)
+    @Html.HiddenFor(model => model.RegDate)
+    @Html.HiddenFor(model => model.SiteID)
+    @Html.HiddenFor(model => model.IdUser)
 
-        <h4>Jobs Performed</h4>
+    @Html.TextAreaFor(model => model.Comment, new { @class = "form-control", @rows = 2, @placeholder = "Enter your comments for this submission here" })
+    <br />
+    <input type="submit" name="approve" value="Approve" />
+    <input type="submit" name="reject" value="Reject" />
+    <input type="submit" name="later" value="Finish Later" />
+    <input type="submit" name="cancel" value="Return to List" />
 
-        <table class="table" id="TimecardSubmi">
-            <thead>
-                <tr>
-                    <th>
-                        Hours
-                    </th>
-                    <th>
-                        Amount
-                    </th>
-                    <th>
-                        Job
-                    </th>
-
-                </tr>
-            </thead>
-
-            @foreach (var item in Model.TimeCardDetails)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Hours)
-
-                        @{ if (item.Hours > item.JobList.MaxHour)
-                            {
-                                <Span style="color:red"> (Exceeded Max Hours)</Span>
-                                ViewBag.Alert = 1;
-                            }
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Amount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.JobList.JobName)
-                    </td>
-
-                </tr>
-            }
-
-        </table>
-
-        <h4>Summary</h4>
-
-        <table class="table">
-            <tr>
-                <th>
-                    Total Hours
-                </th>
-
-                <th>
-                    Total Amount
-                </th>
-
-                <th>
-                    Submission Status
-                </th>
-
-                <th>
-                    Location
-                </th>
-                <th>
-                    Contractor Name
-                </th>
-                <th>
-                    Submitted By
-                </th>
-                <th>
-                    Submission Date
-                </th>
-
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => model.TotalHours)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.TotalAmount)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.TimeStatus)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.SiteLocation.SiteCode)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.SubContractor.SubContractorName)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.User.UserName)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.RegDate)
-                </td>
-            </tr>
-
-        </table>
+}
 
 
-        <p>
-            @Html.ActionLink("Approve", "Approve", new { id = Model.IdTimeCard })|
-            @Html.ActionLink("Reject", "Reject", new { id = Model.IdTimeCard })|
-            @Html.ActionLink("Back to List", "IndexAdm")
-        </p>
-
-        @{ if (ViewBag.Alert == 1)
-            {
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Warning!</strong> Check some of those fields above, Contractor exceeded max hours for a job.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            }
-        }
+@{ if (ViewBag.Alert == 1)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Warning!</strong> Check some of those fields above, Contractor exceeded max hours for a job.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+}

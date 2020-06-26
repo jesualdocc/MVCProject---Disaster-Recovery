@@ -152,7 +152,7 @@ namespace DisasterRecovery.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize("Admin", "Contractor")]
-        public ActionResult Create([Bind(Include = "IdJobList,Hours,Amount")] TimeCardDetail timeCardDetail)
+        public ActionResult Create([Bind(Include = "IdJobList,Hours,Amount, TcDate")] TimeCardDetail timeCardDetail)
         {
             
             if (ModelState.IsValid)
@@ -199,7 +199,7 @@ namespace DisasterRecovery.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize("Admin", "Contractor")]
-        public ActionResult Edit([Bind(Include = "IdTimeCard, IdJobList,Hours, IdTimeCardDetails")] TimeCardDetail timeCardDetail)
+        public ActionResult Edit([Bind(Include = "IdTimeCard, IdJobList,Hours, IdTimeCardDetails, TcDate")] TimeCardDetail timeCardDetail)
         {
             if (ModelState.IsValid)
             {

@@ -42,37 +42,31 @@ namespace DisasterRecovery.Controllers
             return View(timeCards.ToList());
         }
         [CustomAuthorize("Admin")]
-        public ActionResult Approve(int? id)
+        [HttpPost]
+        public ActionResult ReviewDecision(TimeCard timeCard, string approve, string reject, string later, string cancel)
         {
-            if (id == null)
+           
+            if (!string.IsNullOrEmpty(approve))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                timeCard.TimeStatus = "Approved";
+                
             }
-            TimeCard timeCard = db.TimeCards.Find(id);
-            if (timeCard == null)
+            if (!string.IsNullOrEmpty(reject))
             {
-                return HttpNotFound();
-            }
-            
-            timeCard.TimeStatus = "Approved";
-            db.Entry(timeCard).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("IndexAdm");
-        }
-        [CustomAuthorize("Admin")]
-        public ActionResult Reject(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TimeCard timeCard = db.TimeCards.Find(id);
-            if (timeCard == null)
-            {
-                return HttpNotFound();
+                timeCard.TimeStatus = "Rejected";
+                
             }
 
-            timeCard.TimeStatus = "Rejected";
+            if (!string.IsNullOrEmpty(later))
+            {
+                timeCard.TimeStatus = "Under Review";
+            }
+
+            if (!string.IsNullOrEmpty(cancel))
+            {
+                return RedirectToAction("IndexAdm");
+            }
+
             db.Entry(timeCard).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("IndexAdm");
@@ -94,6 +88,7 @@ namespace DisasterRecovery.Controllers
             }
             return View(timeCard);
         }
+
         [CustomAuthorize("Admin", "Contractor")]
         // GET: TimeCards/Details/5
         public ActionResult Details(int? id)
@@ -231,9 +226,6 @@ namespace DisasterRecovery.Controllers
             }
             return View(timeCard);
            
-            
-           // return RedirectToAction("Delete", new RouteValueDictionary( new { controller = "TimeCards", action = "Delete", Id = id }));
-       
         }
 
         // POST: TimeCards/Delete/5
