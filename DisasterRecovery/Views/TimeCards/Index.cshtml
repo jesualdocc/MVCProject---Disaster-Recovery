@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<DisasterRecovery.Models.TimeCard>
 
 @{
-    ViewBag.Title = "Index";
-     if (Session["LogedUserRole"] == "Contractor")
+    ViewBag.Title = "Timesheet";
+     if (Session["LogedUserRole"].ToString() == "Contractor")
     {
         Layout = "~/Views/Shared/_LayoutContractor.cshtml";
     }

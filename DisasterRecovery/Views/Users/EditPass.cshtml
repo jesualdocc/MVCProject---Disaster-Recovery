@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Edit";
-    if (Session["LogedUserRole"] == "Contractor")
+    if (Session["LogedUserRole"].ToString() == "Contractor")
     {
         Layout = "~/Views/Shared/_LayoutContractor.cshtml";
     }
@@ -19,46 +19,47 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.IdUser)
     @Html.HiddenFor(model => model.UserName)
-    @Html.HiddenFor(model => model.LastName)
-    @Html.HiddenFor(model => model.SubContractor)
-    @Html.HiddenFor(model => model.Email)
     @Html.HiddenFor(model => model.FirstName)
+    @Html.HiddenFor(model => model.LastName)
+    @Html.HiddenFor(model => model.Email)
+    @Html.HiddenFor(model => model.UserPassWord)
+    @Html.HiddenFor(model => model.UserStatus)
+    @Html.HiddenFor(model => model.IsAdm)
+    @Html.HiddenFor(model => model.IdSubContractor)
 
-
-<div class="row">
-    <div class="col">
-        <div class="form-group">
-            <label class="control-label" for="lastpassword">Last PassWord:</label>
-            <div class="col-md-10">
-                <input type="password" id="LastPassword" class="form-control" required />
-                @Html.ValidationMessageFor(model => model.UserPassWord, "", new { @class = "text-danger", @Required = "require" })
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="NewPassword">New PassWord:</label>
-            <div class="col-md-10">
-                <input type="password" id="NewPassword" class="form-control" required />
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label class="control-label" for="lastpassword">Current PassWord:</label>
+                <div class="col-md-10">
+                    <input type="password" id="LastPassword" name="LastPassword" class="form-control" required />
+                </div>
             </div>
             <div class="form-group">
-                <label class="control-label" for="ComparePassword">Confirm PassWord:</label>
+                <label class="control-label" for="NewPassword">New PassWord:</label>
                 <div class="col-md-10">
-                    <input type="password" id="ComparePassword" class="form-control" required />
+                    <input type="password" id="NewPassword" name="NewPassword" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="ComparePassword">Confirm PassWord:</label>
+                    <div class="col-md-10">
+                        <input type="password" id="ComparePassword" name="ComparePassword" class="form-control" required />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </div>
         </div>
-        <div class="w-100"></div>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </div>
-    </div>
-</div>
 }
 
 
+
 <div>
-    @if (Session["LogedUserRole"] == "Admin")
+    @if (Session["LogedUserRole"].ToString() == "Admin")
     {
         @Html.ActionLink("Back to List", "Index")
 
@@ -67,4 +68,27 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+}
+
+@{ 
+    if (Session["AlertNew"] != null)
+    {
+        Session["AlertNew"] = null;
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Your Password has been reset!</strong> Please Change it for a new one.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+   if (ViewBag.Alert == 1)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> Password don't match.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
 }

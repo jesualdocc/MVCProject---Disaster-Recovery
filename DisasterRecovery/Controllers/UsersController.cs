@@ -104,6 +104,47 @@ namespace DisasterRecovery.Controllers
             ViewBag.IdSubContractor = new SelectList(db.SubContractors, "IdSubContractor", "SubContractorName", user.IdSubContractor);
             return View(user);
         }
+        [CustomAuthorize("Admin", "Contractor")]
+        public ActionResult EditPass(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.IdSubContractor = new SelectList(db.SubContractors, "IdSubContractor", "SubContractorName", user.IdSubContractor);
+            return View(user);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [CustomAuthorize("Admin", "Contractor")]
+        public ActionResult EditPass([Bind(Include = "IdUser,UserName,FirstName,LastName,Email,UserPassWord,UserStatus,IsAdm,IdSubContractor")] User user, string LastPassword, string NewPassword, string ComparePassword)
+        {
+            if (ModelState.IsValid)
+            {
+                LastPassword = LoginController.HashPaswd(LastPassword);
+                if (LastPassword == user.UserPassWord)
+            {
+                if(NewPassword == ComparePassword)
+                {
+                        user.UserPassWord = LoginController.HashPaswd(NewPassword);
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
+                       Session["Message"] = "Password Updated, Please Login again.";
+                        return RedirectToAction("Index", "Login");
+                       
+                    }
+            }
+                
+            }
+            ViewBag.IdSubContractor = new SelectList(db.SubContractors, "IdSubContractor", "SubContractorName", user.IdSubContractor);
+            ViewBag.Alert = 1;
+            return View(user);
+        }
 
         // GET: Users/Delete/5
         [CustomAuthorize("Admin")]
@@ -142,45 +183,24 @@ namespace DisasterRecovery.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult RecoverAccount(string receiver, string message)
+        public ActionResult ResetPaswd()
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var senderEmail = new MailAddress("jamilmoughal786@gmail.com", "Jamil");
-                    var receiverEmail = new MailAddress(receiver, "Receiver");
-                    var password = "Your Email Password here";
-                    var sub = "Recover Your Password";
-                    var body = "Use this Link to Recover your Password" ;
-                    var smtp = new SmtpClient
-                    {
-                        Host = "smtp.gmail.com",
-                        Port = 587,
-                        EnableSsl = true,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential(senderEmail.Address, password)
-                    };
-                    using (var mess = new MailMessage(senderEmail, receiverEmail)
-                    {
-                        Subject = sub,
-                        Body = body
-                    })
-                    {
-                        smtp.Send(mess);
-                    }
-                    return View();
-                }
-            }
-            catch (Exception)
-            {
-                ViewBag.Error = "Some Error";
-            }
             return View();
         }
 
+        [HttpPost, ActionName("ResetPaswd")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPaswd(int? id)
+        {
+            if (ModelState.IsValid)
+            {
+                var userID = db.Users.Find(id);
+                userID.UserPassWord = LoginController.HashPaswd(userID.UserName + "1234");
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

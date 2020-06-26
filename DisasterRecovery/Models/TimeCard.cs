@@ -28,6 +28,7 @@ namespace DisasterRecovery.Models
         public string TimeStatus { get; set; }
         public Nullable<System.DateTime> RegDate { get; set; }
         public int IdUser { get; set; }
+        public string Comment { get; set; }
     
         public virtual SiteLocation SiteLocation { get; set; }
         public virtual SubContractor SubContractor { get; set; }

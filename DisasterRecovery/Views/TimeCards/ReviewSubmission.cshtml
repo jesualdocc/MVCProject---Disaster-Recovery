@@ -1,13 +1,13 @@
 ﻿@model DisasterRecovery.Models.TimeCard
 
 @{
-    ViewBag.Title = "ReviewSubmission";
+    ViewBag.Title = "Review Submission";
 }
 
     <center>
         <h2>Submission Details</h2>
     </center>
-    <div>
+    
         <hr />
 
         <h4>Jobs Performed</h4>
@@ -97,7 +97,7 @@
                 </td>
 
                 <td>
-                    @Html.DisplayFor(model => model.SiteLocation)
+                    @Html.DisplayFor(model => model.SiteLocation.SiteCode)
                 </td>
 
                 <td>

@@ -12,7 +12,6 @@ namespace DisasterRecovery.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
 
     public partial class User
     {
@@ -22,7 +21,6 @@ namespace DisasterRecovery.Models
             this.TimeCards = new HashSet<TimeCard>();
         }
 
-        
         public int IdUser { get; set; }
         [DataType(DataType.Text)]
         public string UserName { get; set; }
@@ -38,11 +36,9 @@ namespace DisasterRecovery.Models
         public string UserStatus { get; set; }
         public int IsAdm { get; set; }
         public Nullable<int> IdSubContractor { get; set; }
-    
+
         public virtual SubContractor SubContractor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TimeCard> TimeCards { get; set; }
-
-        
     }
 }

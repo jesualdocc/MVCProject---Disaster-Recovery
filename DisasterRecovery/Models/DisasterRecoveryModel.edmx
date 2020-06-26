@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DisasterRecoveryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DisasterRecoveryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="JobList">
           <Key>
             <PropertyRef Name="IdJobList" />
@@ -49,6 +49,7 @@
           <Property Name="TimeStatus" Type="varchar" MaxLength="50" />
           <Property Name="RegDate" Type="datetime" />
           <Property Name="IdUser" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="varchar" MaxLength="2000" />
         </EntityType>
         <EntityType Name="TimeCardDetails">
           <Key>
@@ -59,6 +60,7 @@
           <Property Name="Hours" Type="int" />
           <Property Name="Amount" Type="float" />
           <Property Name="IdTimeCardDetails" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TcDate" Type="datetime" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -194,8 +196,7 @@
             <End Role="User" EntitySet="User" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DisasterRecoveryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -253,6 +254,7 @@
           <NavigationProperty Name="SubContractor" Relationship="Self.FK_TimeCard_SubContractor" FromRole="TimeCard" ToRole="SubContractor" />
           <NavigationProperty Name="User" Relationship="Self.FK_TimeCard_User" FromRole="TimeCard" ToRole="User" />
           <NavigationProperty Name="TimeCardDetails" Relationship="Self.FK_TimeCardDetails_timeCard" FromRole="TimeCard" ToRole="TimeCardDetails" />
+          <Property Name="Comment" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TimeCardDetail">
           <Key>
@@ -265,6 +267,7 @@
           <Property Name="IdTimeCardDetails" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="JobList" Relationship="Self.FK_TimecardDetails_JobList" FromRole="TimeCardDetails" ToRole="JobList" />
           <NavigationProperty Name="TimeCard" Relationship="Self.FK_TimeCardDetails_timeCard" FromRole="TimeCardDetails" ToRole="TimeCard" />
+          <Property Name="TcDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -446,6 +449,7 @@
           <EntitySetMapping Name="TimeCards">
             <EntityTypeMapping TypeName="DisasterRecoveryModel.TimeCard">
               <MappingFragment StoreEntitySet="TimeCard">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="IdTimeCard" ColumnName="IdTimeCard" />
                 <ScalarProperty Name="SiteID" ColumnName="SiteID" />
                 <ScalarProperty Name="IdSubContractor" ColumnName="IdSubContractor" />
@@ -460,6 +464,7 @@
           <EntitySetMapping Name="TimeCardDetails">
             <EntityTypeMapping TypeName="DisasterRecoveryModel.TimeCardDetail">
               <MappingFragment StoreEntitySet="TimeCardDetails">
+                <ScalarProperty Name="TcDate" ColumnName="TcDate" />
                 <ScalarProperty Name="IdTimeCard" ColumnName="IdTimeCard" />
                 <ScalarProperty Name="IdJobList" ColumnName="IdJobList" />
                 <ScalarProperty Name="Hours" ColumnName="Hours" />

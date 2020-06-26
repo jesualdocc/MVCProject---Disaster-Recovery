@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DisasterRecovery.Infrastructure;
 using DisasterRecovery.Models;
 
 namespace DisasterRecovery.Controllers
@@ -16,6 +17,7 @@ namespace DisasterRecovery.Controllers
         private DisasterRecoveryEntities db = new DisasterRecoveryEntities();
         private static int? timeCardID;
         // GET: TimeCardDetails
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Index()
         {
             timeCardID = Convert.ToInt32(Session["TimeCardID"]);
@@ -36,7 +38,7 @@ namespace DisasterRecovery.Controllers
 
             return View(timeCardDetails.ToList());
         }
-
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult IndexEdit()
         {
             timeCardID = Convert.ToInt32(Session["TimeCardID"]);
@@ -57,7 +59,7 @@ namespace DisasterRecovery.Controllers
 
             return View(timeCardDetails.ToList());
         }
-
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Submit()
         {
             if (timeCardID != null)
@@ -74,7 +76,7 @@ namespace DisasterRecovery.Controllers
 
             return RedirectToAction("Index", "TimeCards");
         }
-
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Cancel()
         {
 
@@ -91,13 +93,13 @@ namespace DisasterRecovery.Controllers
 
             return RedirectToAction("Index", "TimeCards");
         }
-
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult CancelNoDelete()
         {
             return RedirectToAction("Index", "TimeCards");
         }
 
-
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult FinishLater()
         {
             if (timeCardID != null)
@@ -118,8 +120,9 @@ namespace DisasterRecovery.Controllers
 
 
 
-            // GET: TimeCardDetails/Details/5
-            public ActionResult Details(int? id)
+        // GET: TimeCardDetails/Details/5
+        [CustomAuthorize("Admin", "Contractor")]
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -134,6 +137,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: TimeCardDetails/Create
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Create()
         {
             //Active Job = 1, Inactive = 0
@@ -147,6 +151,7 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Create([Bind(Include = "IdJobList,Hours,Amount")] TimeCardDetail timeCardDetail)
         {
             
@@ -171,6 +176,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: TimeCardDetails/Edit/5
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -192,6 +198,7 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Edit([Bind(Include = "IdTimeCard, IdJobList,Hours, IdTimeCardDetails")] TimeCardDetail timeCardDetail)
         {
             if (ModelState.IsValid)
@@ -209,6 +216,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: TimeCardDetails/Delete/5
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -233,7 +241,7 @@ namespace DisasterRecovery.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        [CustomAuthorize("Admin", "Contractor")]
         protected override void Dispose(bool disposing)
         {
             if (disposing)

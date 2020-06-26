@@ -25,6 +25,11 @@ namespace DisasterRecovery.Controllers
         // GET: Login
         public ActionResult Index()
         {
+            if (Session["Message"] != null)
+            {
+                ViewBag.Message = Session["Message"];
+                Session["Message"] = null;
+            }
             var users = db.Users.Include(u => u.SubContractor);
             return View();
         }
@@ -39,7 +44,8 @@ namespace DisasterRecovery.Controllers
                 string myPaswd = HashPaswd(user.UserPassWord);
                 User myUser = db.Users.FirstOrDefault
                 (u => u.UserName.Equals(user.UserName) && u.UserPassWord.Equals(myPaswd));
-
+                int id = myUser.IdUser;
+                
                 if (myUser == null) {
                 ViewBag.Message = "Incorrect username or password."; }
                 else if (myUser.UserStatus == "0")
@@ -48,6 +54,7 @@ namespace DisasterRecovery.Controllers
                 }
                 else
                 {
+                          
                     Session["LogedUserID"] = myUser.IdUser.ToString();
                     Session["LogedUserName"] = myUser.FirstName + " " + myUser.LastName;
                     
@@ -55,20 +62,40 @@ namespace DisasterRecovery.Controllers
                     {
                         Session["LogedUserRole"] = "Admin";
                         Session["Users"] = myUser.UserName;
+                        if (TempPaswd(myUser.UserName, myUser.UserPassWord))
+                        {
+                            Session["AlertNew"] = 1;
+                            return RedirectToAction("EditPass", "Users", new { id });
+                        }
                     }
                     else
                     {
                         Session["LogedUserRole"] = "Contractor";
+                        if (TempPaswd(myUser.UserName, myUser.UserPassWord)) 
+                        {
+                            Session["AlertNew"] = 1;
+                            return RedirectToAction("EditPass", "Users", new { id });
+                        }
+                            
                         return RedirectToAction("Index", "TimeCards");
-                    }
-                        
 
+                    }
                     return RedirectToAction("IndexAdm", "TimeCards");
                 }
             }
             return View();
         }
+        public static bool TempPaswd(string UserName, string Pass)
+        {
+            
+            if(Pass == HashPaswd(UserName + "1234"))
+            {
+                return true;
+            }
 
+            return false;
+
+        }
         public static string HashPaswd(string Pass)
         {
             //create new instance of md5
@@ -111,7 +138,7 @@ namespace DisasterRecovery.Controllers
             Session["LogedUserID"] = null;
             Session["LogedUserName"] = null;
             Session["LogedUserRole"] = null;
-            Session["feedback"] = "Logged Out successfully!";
+            Session["Message"] = "Logged out successfully!";
             return RedirectToAction("Index", "Login");
         }
 

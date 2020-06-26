@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "User Management";
     
-
 }
 
     <h2>User Management</h2>
@@ -79,6 +78,7 @@
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.IdUser }) |
                     @Html.ActionLink("Details", "Details", new { id = item.IdUser }) |
+                    @Html.ActionLink("Reset Pasword", "ResetPaswd", new { id = item.IdUser }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.IdUser })
                 </td>
             </tr>

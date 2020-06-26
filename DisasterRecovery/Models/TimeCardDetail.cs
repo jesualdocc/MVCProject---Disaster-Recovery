@@ -19,6 +19,7 @@ namespace DisasterRecovery.Models
         public Nullable<int> Hours { get; set; }
         public Nullable<double> Amount { get; set; }
         public int IdTimeCardDetails { get; set; }
+        public Nullable<System.DateTime> TcDate { get; set; }
     
         public virtual JobList JobList { get; set; }
         public virtual TimeCard TimeCard { get; set; }

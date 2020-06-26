@@ -327,6 +327,8 @@
     <Content Include="Views\Users\UnAuthorized.cshtml" />
     <Content Include="Views\Users\RecoverAccount.cshtml" />
     <Content Include="Views\TimeCardDetails\IndexEdit.cshtml" />
+    <Content Include="Views\Users\EditPass.cshtml" />
+    <Content Include="Views\Users\ResetPaswd.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

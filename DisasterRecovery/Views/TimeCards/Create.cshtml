@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Create";
 
-    if (Session["LogedUserRole"] == "Contractor")
+    if (Session["LogedUserRole"].ToString() == "Contractor")
     {
         Layout = "~/Views/Shared/_LayoutContractor.cshtml";
     }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using DisasterRecovery.Infrastructure;
 using DisasterRecovery.Models;
 
 
@@ -18,6 +19,7 @@ namespace DisasterRecovery.Controllers
         private static int userID;
 
         // GET: TimeCards
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Index()
         {
          
@@ -30,7 +32,7 @@ namespace DisasterRecovery.Controllers
 
             return View(timeCards.ToList());
         }
-
+        [CustomAuthorize("Admin")]
         public ActionResult IndexAdm()
         {
             var timeCards = db.TimeCards.Include(t => t.SiteLocation).Include(t => t.SubContractor).Include(t => t.User);
@@ -39,7 +41,7 @@ namespace DisasterRecovery.Controllers
 
             return View(timeCards.ToList());
         }
-
+        [CustomAuthorize("Admin")]
         public ActionResult Approve(int? id)
         {
             if (id == null)
@@ -57,7 +59,7 @@ namespace DisasterRecovery.Controllers
             db.SaveChanges();
             return RedirectToAction("IndexAdm");
         }
-
+        [CustomAuthorize("Admin")]
         public ActionResult Reject(int? id)
         {
             if (id == null)
@@ -77,7 +79,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: TimeCards/ReviewSubmission/5
-      
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult ReviewSubmission(int? id)
         {
            
@@ -92,7 +94,7 @@ namespace DisasterRecovery.Controllers
             }
             return View(timeCard);
         }
-
+        [CustomAuthorize("Admin", "Contractor")]
         // GET: TimeCards/Details/5
         public ActionResult Details(int? id)
         {
@@ -109,6 +111,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: TimeCards/Create
+        [CustomAuthorize("Contractor")]
         public ActionResult Create()
         {
             ViewBag.JobID = new SelectList(db.JobLists, "IdJobList", "JobName");
@@ -123,6 +126,7 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize("Contractor")]
         public ActionResult Create([Bind(Include = "IdTimeCard,SiteID")] TimeCard timeCard)
         {
            
@@ -158,6 +162,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: TimeCards/Edit/5
+        [CustomAuthorize("Contractor")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -181,6 +186,7 @@ namespace DisasterRecovery.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize("Contractor")]
         public ActionResult Edit([Bind(Include = "IdTimeCard,SiteID,IdSubContractor,TotalHours,TotalAmount,TimeStatus,RegDate")] TimeCard timeCard)
         {
             if (ModelState.IsValid)
@@ -211,6 +217,7 @@ namespace DisasterRecovery.Controllers
         }
 
         // GET: TimeCards/Delete/5
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -232,6 +239,7 @@ namespace DisasterRecovery.Controllers
         // POST: TimeCards/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize("Admin", "Contractor")]
         public ActionResult DeleteConfirmed(int id)
         {
             TimeCard timeCard = db.TimeCards.Find(id);
@@ -245,13 +253,13 @@ namespace DisasterRecovery.Controllers
             }
 
             db.SaveChanges();
-            if(Session["LogedUserRole"] == "Admin")
+            if(Session["LogedUserRole"].ToString() == "Admin")
                 return RedirectToAction("IndexAdm");
             else
                 return RedirectToAction("Index");
         }
 
-
+        [CustomAuthorize("Admin", "Contractor")]
         protected override void Dispose(bool disposing)
         {
             if (disposing)
