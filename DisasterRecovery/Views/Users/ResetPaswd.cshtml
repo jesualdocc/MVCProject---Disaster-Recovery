@@ -1,0 +1,18 @@
+﻿@model DisasterRecovery.Models.User
+
+@{
+    ViewBag.Title = "Reset Confirmation";
+}
+<center>
+    <h3>Are you sure you want to reset this User password?</h3>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Reset" class="btn btn-primary" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</center>
